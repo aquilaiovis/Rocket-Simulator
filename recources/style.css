@@ -1,0 +1,29 @@
+.slider .track {
+    -fx-background-color:#A1A1A5;  /* Hide the track */
+    -fx-background-insets: 1 0 -1 0, 0, 1;
+    -fx-background-radius: 2.5, 2.5, 1.5;
+    -fx-padding: 0.208333em; /* 2.5 */
+}
+
+.slider .thumb {
+    -fx-background-color:#0166B3;
+}
+
+.check-box .box {
+
+    -fx-background-color: #A1A1A5;
+    -fx-border-color:grey;
+    -fx-border-radius:3px;
+
+}
+
+.check-box:selected .mark {
+
+    -fx-background-color: #FFFFFF;
+
+}
+
+.check-box:selected .box {
+
+    -fx-background-color: #0166B3;
+}
