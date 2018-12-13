@@ -192,13 +192,16 @@
                            <padding>
                               <Insets top="10.0" />
                            </padding>
+                           <VBox.margin>
+                              <Insets bottom="10.0" top="10.0" />
+                           </VBox.margin>
                         </CheckBox>
                      </children>
                      <GridPane.margin>
                         <Insets left="10.0" />
                      </GridPane.margin>
                   </VBox>
-                  <Button mnemonicParsing="false" prefHeight="85.0" prefWidth="339.0" style="-fx-background-color: #EE1D23;" text="Launch" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                  <Button mnemonicParsing="false" onAction="#handleLaunch" prefHeight="85.0" prefWidth="339.0" style="-fx-background-color: #EE1D23;" text="Launch" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="8">
                      <font>
                         <Font name="Roboto" size="46.0" />
                      </font>
@@ -270,10 +273,10 @@
                      <children>
                         <LineChart fx:id="test" prefHeight="680.0" prefWidth="662.0" stylesheets="@style.css">
                           <xAxis>
-                            <CategoryAxis side="BOTTOM" />
+                            <NumberAxis side="BOTTOM" fx:id="xAxis" />
                           </xAxis>
                           <yAxis>
-                            <NumberAxis side="LEFT" />
+                            <NumberAxis fx:id="yAxis" side="LEFT" />
                           </yAxis>
                         </LineChart>
                      </children>
