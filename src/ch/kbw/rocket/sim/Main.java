@@ -14,10 +14,9 @@ public class Main extends Application {
         primaryStage.setTitle("Rocket Simulator");
         primaryStage.setResizable(false);
         primaryStage.setFullScreen(true);
-        primaryStage.setScene(new Scene(root,  1920,1080));
+        primaryStage.setScene(new Scene(root));
         primaryStage.show();
     }
-
 
     public static void main(String[] args) {
         launch(args);

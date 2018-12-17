@@ -1,9 +1,18 @@
 package ch.kbw.rocket.sim.model;
 
 
+import java.util.HashMap;
+
 public abstract class Algorithm {
     Rocket rocket;
     int interval;
+    long passedTime;
+
+
+    public Algorithm(Rocket rocket, int interval) {
+        this.rocket = rocket;
+        this.interval = interval;
+    }
 
     double getGravitationalForce(double mass, double r) {
         // g * (m1 * m2 / r*r)
@@ -11,6 +20,7 @@ public abstract class Algorithm {
     }
 
     double getMass(long deltaTime/*in ms*/, double oldMass, double massLossRate) {
+        //TODO: look if is zero
         // m2 = m1 - deltaTime * WeightLoss
         return oldMass - deltaTime / 1000.0 * massLossRate;
     }
@@ -28,6 +38,10 @@ public abstract class Algorithm {
     double getHeight(long deltaTime/*in ms*/, double height, double velocity) {
         // h2= h1+ deltaTime * v2
         return height + deltaTime / 1000.0 * velocity;
+    }
+
+    public Rocket getRocket() {
+        return rocket;
     }
 
     public abstract void increment();
