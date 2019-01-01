@@ -1,17 +1,49 @@
 package ch.kbw.rocket.sim.model;
 
 
-import java.util.HashMap;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 
-public abstract class Algorithm {
+public abstract class Algorithm implements Runnable {
     Rocket rocket;
     int interval;
-    long passedTime;
+    long passedTime, startTime, stopTime;
+    boolean running;
 
 
     public Algorithm(Rocket rocket, int interval) {
+        running = true;
         this.rocket = rocket;
         this.interval = interval;
+    }
+
+    void logPerformance() {
+        try {
+            String fileContent = millisToDate(System.currentTimeMillis()) + "\nCalcTime: " + (stopTime - startTime) +
+                    "ms \nInterval: " + interval + "ms" +
+                    "\n\nstarttime: " + startTime + "\nstoptime: " + stopTime + "\n" + rocket.toString();
+            System.out.println(fileContent);
+
+            FileWriter fileWriter = new FileWriter(System.currentTimeMillis() + "performance.log");
+            fileWriter.write(fileContent);
+            fileWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String millisToDate(long millis) {
+
+        return DateFormat.getDateInstance(DateFormat.SHORT).format(millis);
+        //You can use DateFormat.LONG instead of SHORT
+
     }
 
     double getGravitationalForce(double mass, double r) {
@@ -43,6 +75,7 @@ public abstract class Algorithm {
     public Rocket getRocket() {
         return rocket;
     }
+
 
     public abstract void increment();
 }
