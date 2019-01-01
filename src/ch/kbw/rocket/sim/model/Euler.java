@@ -1,12 +1,20 @@
 package ch.kbw.rocket.sim.model;
 
-import javafx.scene.control.Alert;
-
 public class Euler extends Algorithm {
 
     public Euler(Rocket rocket, int interval) {
         super(rocket, interval);
         passedTime = 0;
+    }
+
+    @Override
+    public void run() {
+        startTime = System.currentTimeMillis();
+        while (running) {
+            increment();
+        }
+        stopTime = System.currentTimeMillis();
+        logPerformance();
     }
 
     @Override
@@ -16,28 +24,25 @@ public class Euler extends Algorithm {
             calculateResultingForce();
             calculateVelocity();
             calculateHeight();
-            calculateMass();
+            calculateFuel();
             rocket.saveStep(passedTime);
             passedTime += interval;
+        }else {
+            running = false;
         }
-
     }
 
     private boolean stalling() {
-        if (rocket.getMass()<0){
-            System.out.println(rocket.getResultingForce());
-            return true;
-        }
-        return false;
+        return rocket.getFuel() < 0;
     }
 
     private void calculateGravitation() {
         // needs distance, distance will be the old one
-        rocket.setGravity(getGravitationalForce(rocket.getMass(), rocket.getHeight() + Constant.EARTH_RADIUS_KM));
+        rocket.setGravity(getGravitationalForce(rocket.getBaseMass() + rocket.getFuel(), rocket.getHeight() + Constant.EARTH_RADIUS_KM));
     }
 
-    private void calculateMass() {
-        rocket.setMass(getMass(interval, rocket.getMass(), rocket.getMassLossRate()));
+    private void calculateFuel() {
+        rocket.setFuel(getMass(interval, rocket.getFuel(), rocket.getMassLossRate()));
     }
 
     private void calculateResultingForce() {
@@ -45,7 +50,7 @@ public class Euler extends Algorithm {
     }
 
     private void calculateVelocity() {
-        rocket.setVelocity(getVelocity(interval, rocket.getMass(), rocket.getResultingForce()));
+        rocket.setVelocity(getVelocity(interval, rocket.getBaseMass(), rocket.getResultingForce()));
     }
 
     private void calculateHeight() {

@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 public class Rocket {
 
-    private double mass;            //in kg
+    private double baseMass;        //in kg
     private double massLossRate;    //in kg/s
     private double fuel;            //in kg
     private double height;          //in m
@@ -12,28 +12,43 @@ public class Rocket {
     private double acceleration;    // ?
     private double force;           //in N
     private double resultingForce;  //in N
-    private double gravity;     //in N
+    private double gravity;         //in N
     //TODO: Convert to Lists
     private HashMap<Long, Double> massHistory = new HashMap<>();
     private HashMap<Long, Double> heightHistory = new HashMap<>();
     private HashMap<Long, Double> velocityHistory = new HashMap<>();
     private HashMap<Long, Double> resultingForceHistory = new HashMap<>();
     private HashMap<Long, Double> gravityHistory = new HashMap<>();
+    private HashMap<Long, Double> jouleHistory = new HashMap<>();
 
-    public Rocket(double mass, double massLossRate, double fuel, double force) {
-        this.mass = mass;
+    public Rocket(double baseMass, double massLossRate, double fuel, double force) {
+        this.baseMass = baseMass;
         this.massLossRate = massLossRate;
         this.fuel = fuel;
         this.force = force;
         height = 0;
         acceleration = 0;
-        resultingForce =0;
-        gravity =0;
+        resultingForce = 0;
+        gravity = 0;
         velocity = 0;
     }
 
+    public Rocket(double baseMass, double ISP, double fuel, double force, boolean usesISP) {
+        this.baseMass = baseMass;
+        this.massLossRate = force / (Constant.GRAVITATIONAL_ACCELERATION * ISP);
+        System.out.println(massLossRate);
+        this.fuel = fuel;
+        this.force = force;
+        height = 0;
+        acceleration = 0;
+        resultingForce = 0;
+        gravity = 0;
+        velocity = 0;
+    }
+
+
     public Rocket(Rocket rocket) {
-        this.mass = rocket.getMass();
+        this.baseMass = rocket.getBaseMass();
         this.massLossRate = rocket.getMassLossRate();
         this.fuel = rocket.getFuel();
         this.height = rocket.getHeight();
@@ -45,11 +60,23 @@ public class Rocket {
     }
 
     public void saveStep(long passedTime) {
-        massHistory.put(passedTime, mass);
+        massHistory.put(passedTime, baseMass + fuel);
         heightHistory.put(passedTime, height);
         velocityHistory.put(passedTime, velocity);
         resultingForceHistory.put(passedTime, resultingForce);
         gravityHistory.put(passedTime, gravity);
+        jouleHistory.put(passedTime, force * height);
+    }
+
+    @Override
+    public String toString() {
+
+        return  "\nRocket data:" +
+                "\n Basemass: " + baseMass +
+                "\n Fuel: " + fuel +
+                "\n Masslossrate: " + massLossRate +
+                "\n Force: " + force +
+                "\n Height: " + height+"\n";
     }
 
     public double getResultingForce() {
@@ -60,12 +87,12 @@ public class Rocket {
         this.resultingForce = resultingForce;
     }
 
-    public double getMass() {
-        return mass;
+    public double getBaseMass() {
+        return baseMass;
     }
 
-    public void setMass(double mass) {
-        this.mass = mass;
+    public void setBaseMass(double baseMass) {
+        this.baseMass = baseMass;
     }
 
     public double getMassLossRate() {
@@ -144,4 +171,11 @@ public class Rocket {
         return gravityHistory;
     }
 
+    public HashMap<Long, Double> getJouleHistory() {
+        return jouleHistory;
+    }
+
+    public void setJouleHistory(HashMap<Long, Double> jouleHistory) {
+        this.jouleHistory = jouleHistory;
+    }
 }
