@@ -112,6 +112,7 @@ public class Controller implements Initializable {
     }
 
     public void addQueue(PriorityBlockingQueue<Data> queue, XYChart.Series chart) throws InterruptedException {
+        // FIXME: 08.01.2019 Visualisation hangup
         while (!queue.isEmpty()) {
             Data data = queue.poll(100, TimeUnit.MILLISECONDS);
             chart.getData().add(new XYChart.Data(data.getTimestamp(), data.getValue()));
