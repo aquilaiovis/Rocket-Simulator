@@ -1,6 +1,6 @@
 package ch.kbw.rocket.sim.model;
 
-import java.util.HashMap;
+import java.util.concurrent.PriorityBlockingQueue;
 
 public class Rocket {
 
@@ -14,12 +14,14 @@ public class Rocket {
     private double resultingForce;  //in N
     private double gravity;         //in N
     //TODO: Convert to Lists
-    private HashMap<Long, Double> massHistory = new HashMap<>();
-    private HashMap<Long, Double> heightHistory = new HashMap<>();
-    private HashMap<Long, Double> velocityHistory = new HashMap<>();
-    private HashMap<Long, Double> resultingForceHistory = new HashMap<>();
-    private HashMap<Long, Double> gravityHistory = new HashMap<>();
-    private HashMap<Long, Double> jouleHistory = new HashMap<>();
+    private PriorityBlockingQueue<Data> massQueue = new PriorityBlockingQueue<>();
+    private PriorityBlockingQueue<Data> heightQueue = new PriorityBlockingQueue<>();
+    private PriorityBlockingQueue<Data> velocityQueue = new PriorityBlockingQueue<>();
+    private PriorityBlockingQueue<Data> resultingForceQueue = new PriorityBlockingQueue<>();
+    private PriorityBlockingQueue<Data> gravityQueue = new PriorityBlockingQueue<>();
+    private PriorityBlockingQueue<Data> jouleForceQueue = new PriorityBlockingQueue<>();
+
+
 
     public Rocket(double baseMass, double massLossRate, double fuel, double force) {
         this.baseMass = baseMass;
@@ -60,23 +62,23 @@ public class Rocket {
     }
 
     public void saveStep(long passedTime) {
-        massHistory.put(passedTime, baseMass + fuel);
-        heightHistory.put(passedTime, height);
-        velocityHistory.put(passedTime, velocity);
-        resultingForceHistory.put(passedTime, resultingForce);
-        gravityHistory.put(passedTime, gravity);
-        jouleHistory.put(passedTime, force * height);
+        massQueue.add(new Data(baseMass + fuel, passedTime));
+        heightQueue.add(new Data(height, passedTime));
+        velocityQueue.add(new Data(velocity, passedTime));
+        resultingForceQueue.add(new Data(resultingForce, passedTime));
+        gravityQueue.add(new Data(gravity, passedTime));
+        jouleForceQueue.add(new Data(force * height, passedTime));
     }
 
     @Override
     public String toString() {
 
-        return  "\nRocket data:" +
+        return "\nRocket data:" +
                 "\n Basemass: " + baseMass +
                 "\n Fuel: " + fuel +
                 "\n Masslossrate: " + massLossRate +
                 "\n Force: " + force +
-                "\n Height: " + height+"\n";
+                "\n Height: " + height + "\n";
     }
 
     public double getResultingForce() {
@@ -151,31 +153,27 @@ public class Rocket {
         this.gravity = gravity;
     }
 
-    public HashMap<Long, Double> getMassHistory() {
-        return massHistory;
+    public PriorityBlockingQueue<Data> getMassQueue() {
+        return massQueue;
     }
 
-    public HashMap<Long, Double> getHeightHistory() {
-        return heightHistory;
+    public PriorityBlockingQueue<Data> getHeightQueue() {
+        return heightQueue;
     }
 
-    public HashMap<Long, Double> getVelocityHistory() {
-        return velocityHistory;
+    public PriorityBlockingQueue<Data> getVelocityQueue() {
+        return velocityQueue;
     }
 
-    public HashMap<Long, Double> getResultingForceHistory() {
-        return resultingForceHistory;
+    public PriorityBlockingQueue<Data> getResultingForceQueue() {
+        return resultingForceQueue;
     }
 
-    public HashMap<Long, Double> getGravityHistory() {
-        return gravityHistory;
+    public PriorityBlockingQueue<Data> getGravityQueue() {
+        return gravityQueue;
     }
 
-    public HashMap<Long, Double> getJouleHistory() {
-        return jouleHistory;
-    }
-
-    public void setJouleHistory(HashMap<Long, Double> jouleHistory) {
-        this.jouleHistory = jouleHistory;
+    public PriorityBlockingQueue<Data> getJouleForceQueue() {
+        return jouleForceQueue;
     }
 }

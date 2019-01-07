@@ -1,10 +1,10 @@
 package ch.kbw.rocket.sim;
 
 import ch.kbw.rocket.sim.model.Algorithm;
+import ch.kbw.rocket.sim.model.Data;
 import ch.kbw.rocket.sim.model.Euler;
 import ch.kbw.rocket.sim.model.Rocket;
 import javafx.animation.AnimationTimer;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -17,6 +17,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.concurrent.PriorityBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 public class Controller implements Initializable {
 
@@ -45,8 +47,8 @@ public class Controller implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         //Falcon heavy
-        //algorithm = new Euler(new Rocket(1420788.0, 5038, 1020788.0, 22819000), 1000);
-        algorithm = new Euler(new Rocket(1420788 - 488370, 640, 488370, 22819000, true), 10);
+        algorithm = new Euler(new Rocket(1420788.0 - 488370, 5038, 1020788.0, 22819000), 10);
+        //algorithm = new Euler(new Rocket(1420788 - 488370, 640, 488370, 22819000, true), 10);
         initChart(test, velocity, "Velocity", "m/s", "Falcon Heavy");
         initChart(test1, height, "height", "m", "Falcon Heavy");
         initChart(test2, mass, "mass", "kg", "Falcon Heavy");
@@ -74,19 +76,30 @@ public class Controller implements Initializable {
         AnimationTimer animationTimer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                addData(rocket.getVelocityHistory(), velocity);
-                addData(rocket.getHeightHistory(), height);
-                addData(rocket.getMassHistory(), mass);
-                addData(rocket.getGravityHistory(), gravitation);
-                addData(rocket.getResultingForceHistory(), resultingForce);
-                addData(rocket.getVelocityHistory(), velocity);
-                addData(rocket.getJouleHistory(), joules);
+
+                try {
+                    addQueue(rocket.getMassQueue(), mass);
+
+                    addQueue(rocket.getVelocityQueue(), velocity);
+                    addQueue(rocket.getHeightQueue(), height);
+                    addQueue(rocket.getGravityQueue(), gravitation);
+                    addQueue(rocket.getResultingForceQueue(), resultingForce);
+                    addQueue(rocket.getJouleForceQueue(), joules);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         };
-        animationTimer.start();
+
 
         calculation = new Thread(algorithm);
         calculation.start();
+        try {
+            Thread.sleep(50);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        animationTimer.start();
     }
 
     public void addData(HashMap<Long, Double> map, XYChart.Series chart) {
@@ -96,6 +109,13 @@ public class Controller implements Initializable {
             chart.getData().add(new XYChart.Data(pair.getKey(), pair.getValue()));
             it.remove(); // avoids a ConcurrentModificationException
         }
+    }
 
+    public void addQueue(PriorityBlockingQueue<Data> queue, XYChart.Series chart) throws InterruptedException {
+        while (!queue.isEmpty()) {
+            Data data = queue.poll(100, TimeUnit.MILLISECONDS);
+            chart.getData().add(new XYChart.Data(data.getTimestamp(), data.getValue()));
+
+        }
     }
 }
