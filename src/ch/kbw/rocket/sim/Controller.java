@@ -13,9 +13,7 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.concurrent.TransferQueue;
 
@@ -46,7 +44,7 @@ public class Controller implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         //Falcon heavy
-        algorithm = new Euler(new Rocket(1420788.0 - 488370, 5038, 1020788.0, 22819000), 10);
+        algorithm = new Euler(new Rocket(1420788.0 - 488370, 5038, 1020788.0, 22819000), 1);
         //algorithm = new Euler(new Rocket(1420788 - 488370, 640, 488370, 22819000, true), 10);
         initChart(test, velocity, "Velocity", "m/s", "Falcon Heavy");
         initChart(test1, height, "height", "m", "Falcon Heavy");
@@ -100,21 +98,15 @@ public class Controller implements Initializable {
         animationTimer.start();
     }
 
-    public void addData(HashMap<Long, Double> map, XYChart.Series chart) {
-        Iterator it = map.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry) it.next();
-            chart.getData().add(new XYChart.Data(pair.getKey(), pair.getValue()));
-            it.remove(); // avoids a ConcurrentModificationException
-        }
-    }
 
     public void addQueue(TransferQueue<Data> queue, XYChart.Series chart) throws InterruptedException {
-        // FIXME: 08.01.2019 Visualisation hangup
-
-        Data data = queue.take();
-        System.out.println(data.getTimestamp());
-        chart.getData().add(new XYChart.Data(data.getTimestamp(), data.getValue()));
-
+        //Try visualizing it one by one until the calculation has finished then visualize the rest
+        ArrayList<Data> list = new ArrayList<>();
+        queue.drainTo(list);
+        XYChart.Data[] array = new XYChart.Data[list.size()];
+        for (int i = 0; i < list.size(); i++) {
+            array[i] = new XYChart.Data(list.get(i).getTimestamp(),list.get(i).getValue());
+        }
+        chart.getData().addAll(array);
     }
 }
