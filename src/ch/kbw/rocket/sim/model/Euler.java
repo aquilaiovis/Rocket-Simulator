@@ -50,7 +50,7 @@ public class Euler extends Algorithm {
     }
 
     private void calculateVelocity() {
-        rocket.setVelocity(getVelocity(interval, rocket.getBaseMass(), rocket.getResultingForce()));
+        rocket.setVelocity(getVelocity(interval, rocket.getBaseMass()+rocket.getFuel(), rocket.getResultingForce()));
     }
 
     private void calculateHeight() {
