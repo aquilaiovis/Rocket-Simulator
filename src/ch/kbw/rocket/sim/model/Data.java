@@ -1,6 +1,6 @@
 package ch.kbw.rocket.sim.model;
 
-public class Data implements Comparable{
+public class Data {
     private double value;
     private long timestamp;
 
@@ -27,8 +27,5 @@ public class Data implements Comparable{
         this.timestamp = timestamp;
     }
 
-    @Override
-    public int compareTo(Object o) {
-        return 0;
-    }
+
 }

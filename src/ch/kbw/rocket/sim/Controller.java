@@ -17,8 +17,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.concurrent.PriorityBlockingQueue;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TransferQueue;
 
 public class Controller implements Initializable {
 
@@ -79,7 +78,6 @@ public class Controller implements Initializable {
 
                 try {
                     addQueue(rocket.getMassQueue(), mass);
-
                     addQueue(rocket.getVelocityQueue(), velocity);
                     addQueue(rocket.getHeightQueue(), height);
                     addQueue(rocket.getGravityQueue(), gravitation);
@@ -111,12 +109,12 @@ public class Controller implements Initializable {
         }
     }
 
-    public void addQueue(PriorityBlockingQueue<Data> queue, XYChart.Series chart) throws InterruptedException {
+    public void addQueue(TransferQueue<Data> queue, XYChart.Series chart) throws InterruptedException {
         // FIXME: 08.01.2019 Visualisation hangup
-        while (!queue.isEmpty()) {
-            Data data = queue.poll(100, TimeUnit.MILLISECONDS);
-            chart.getData().add(new XYChart.Data(data.getTimestamp(), data.getValue()));
 
-        }
+        Data data = queue.take();
+        System.out.println(data.getTimestamp());
+        chart.getData().add(new XYChart.Data(data.getTimestamp(), data.getValue()));
+
     }
 }

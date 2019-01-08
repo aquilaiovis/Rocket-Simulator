@@ -1,6 +1,7 @@
 package ch.kbw.rocket.sim.model;
 
-import java.util.concurrent.PriorityBlockingQueue;
+import java.util.concurrent.LinkedTransferQueue;
+import java.util.concurrent.TransferQueue;
 
 public class Rocket {
 
@@ -14,13 +15,12 @@ public class Rocket {
     private double resultingForce;  //in N
     private double gravity;         //in N
     //TODO: Convert to Lists
-    private PriorityBlockingQueue<Data> massQueue = new PriorityBlockingQueue<>();
-    private PriorityBlockingQueue<Data> heightQueue = new PriorityBlockingQueue<>();
-    private PriorityBlockingQueue<Data> velocityQueue = new PriorityBlockingQueue<>();
-    private PriorityBlockingQueue<Data> resultingForceQueue = new PriorityBlockingQueue<>();
-    private PriorityBlockingQueue<Data> gravityQueue = new PriorityBlockingQueue<>();
-    private PriorityBlockingQueue<Data> jouleForceQueue = new PriorityBlockingQueue<>();
-
+    private TransferQueue<Data> massQueue = new LinkedTransferQueue<>();
+    private TransferQueue<Data> heightQueue = new LinkedTransferQueue<>();
+    private TransferQueue<Data> velocityQueue = new LinkedTransferQueue<>();
+    private TransferQueue<Data> resultingForceQueue = new LinkedTransferQueue<>();
+    private TransferQueue<Data> gravityQueue = new LinkedTransferQueue<>();
+    private TransferQueue<Data> jouleForceQueue = new LinkedTransferQueue<>();
 
 
     public Rocket(double baseMass, double massLossRate, double fuel, double force) {
@@ -62,12 +62,16 @@ public class Rocket {
     }
 
     public void saveStep(long passedTime) {
-        massQueue.add(new Data(baseMass + fuel, passedTime));
-        heightQueue.add(new Data(height, passedTime));
-        velocityQueue.add(new Data(velocity, passedTime));
-        resultingForceQueue.add(new Data(resultingForce, passedTime));
-        gravityQueue.add(new Data(gravity, passedTime));
-        jouleForceQueue.add(new Data(force * height, passedTime));
+        try {
+            massQueue.put(new Data(baseMass + fuel, passedTime));
+            heightQueue.put(new Data(height, passedTime));
+            velocityQueue.put(new Data(velocity, passedTime));
+            resultingForceQueue.put(new Data(resultingForce, passedTime));
+            gravityQueue.put(new Data(gravity, passedTime));
+            jouleForceQueue.put(new Data(force * height, passedTime));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -153,27 +157,27 @@ public class Rocket {
         this.gravity = gravity;
     }
 
-    public PriorityBlockingQueue<Data> getMassQueue() {
+    public TransferQueue<Data> getMassQueue() {
         return massQueue;
     }
 
-    public PriorityBlockingQueue<Data> getHeightQueue() {
+    public TransferQueue<Data> getHeightQueue() {
         return heightQueue;
     }
 
-    public PriorityBlockingQueue<Data> getVelocityQueue() {
+    public TransferQueue<Data> getVelocityQueue() {
         return velocityQueue;
     }
 
-    public PriorityBlockingQueue<Data> getResultingForceQueue() {
+    public TransferQueue<Data> getResultingForceQueue() {
         return resultingForceQueue;
     }
 
-    public PriorityBlockingQueue<Data> getGravityQueue() {
+    public TransferQueue<Data> getGravityQueue() {
         return gravityQueue;
     }
 
-    public PriorityBlockingQueue<Data> getJouleForceQueue() {
+    public TransferQueue<Data> getJouleForceQueue() {
         return jouleForceQueue;
     }
 }
