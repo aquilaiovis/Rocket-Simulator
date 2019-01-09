@@ -27,7 +27,7 @@ public class Euler extends Algorithm {
             calculateFuel();
             rocket.saveStep(passedTime);
             passedTime += interval;
-        }else {
+        } else {
             running = false;
         }
     }
@@ -50,10 +50,16 @@ public class Euler extends Algorithm {
     }
 
     private void calculateVelocity() {
-        rocket.setVelocity(getVelocity(interval, rocket.getBaseMass()+rocket.getFuel(), rocket.getResultingForce()));
+        System.out.println(rocket.getVelocity());
+        rocket.setVelocity(getVelocity(interval, rocket.getBaseMass() + rocket.getFuel(), rocket.getResultingForce(), rocket.getVelocity()));
     }
 
     private void calculateHeight() {
         rocket.setHeight(getHeight(interval, rocket.getHeight(), rocket.getVelocity()));
+    }
+
+    double getVelocity(long deltaTime, double mass, double resultingForce, double oldVelocity) {
+        // v2 = deltaTime * (ResultingForce/m1)+ v1
+        return deltaTime / 1000.0 * resultingForce / mass + oldVelocity;
     }
 }
