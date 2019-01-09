@@ -31,6 +31,7 @@ public abstract class Algorithm implements Runnable {
                     "ms \nInterval: " + interval + "ms" +
                     "\n\nstarttime: " + startTime
                     + "\nstoptime: " + stopTime
+                    + "\nalgorithm: " + this.getClass().getSimpleName()
                     + "\n" + rocket.toString();
             System.out.println(fileContent);
 
@@ -61,10 +62,9 @@ public abstract class Algorithm implements Runnable {
         return force - gravitationalForce;
     }
 
-    double getVelocity(long deltaTime, double mass, double resultingForce, double oldVelocity) {
-        // v2 = deltaTime * (ResultingForce/m1)
-        return  deltaTime / 1000.0 * resultingForce / mass + oldVelocity;
-    }
+    abstract double getVelocity(long deltaTime, double mass, double resultingForce, double oldVelocity);
+
+
 
     double getHeight(long deltaTime/*in ms*/, double height, double velocity) {
         // h2= h1+ deltaTime * v2
@@ -75,6 +75,9 @@ public abstract class Algorithm implements Runnable {
         return rocket;
     }
 
+     double velocity(long t, double v1) {
+        return getVelocity(t, rocket.getBaseMass() + rocket.getFuel(), rocket.getResultingForce(), v1);
+    }
 
     public abstract void increment();
 }

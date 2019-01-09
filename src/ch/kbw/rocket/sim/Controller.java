@@ -1,9 +1,6 @@
 package ch.kbw.rocket.sim;
 
-import ch.kbw.rocket.sim.model.Algorithm;
-import ch.kbw.rocket.sim.model.Data;
-import ch.kbw.rocket.sim.model.Euler;
-import ch.kbw.rocket.sim.model.Rocket;
+import ch.kbw.rocket.sim.model.*;
 import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -30,7 +27,7 @@ public class Controller implements Initializable {
     private NumberAxis yAxis;
     @FXML
     private LineChart<Number, Number> test;
-    private Algorithm algorithm;
+    private Algorithm algorithm,algorithm2;
     private Thread calculation;
     private Rocket rocket;
     private XYChart.Series<Number, Number> velocity = new XYChart.Series<>();
@@ -44,7 +41,7 @@ public class Controller implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         //Falcon heavy
-        algorithm = new Euler(new Rocket(1420788.0 - 488370, 5038, 1020788.0, 22819000), 10);
+        algorithm = new RK4(new Rocket(1420788.0 - 488370, 5038, 1020788.0, 22819000), 100);
         //algorithm = new Euler(new Rocket(1420788 - 488370, 640, 488370, 22819000, true), 10);
         initChart(test, velocity, "Velocity", "m/s", "Falcon Heavy");
         initChart(test1, height, "height", "m", "Falcon Heavy");
