@@ -40,8 +40,11 @@ public class Controller implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        //Falcon heavy
-        algorithm = new RK4(new Rocket(1420788.0 - 488370, 5038, 1020788.0, 22819000), 100);
+        //Falcon heavy                               549054 - 507,500           348.0s       507,500   7607000 true
+        algorithm = new Euler(new Rocket(549054 - 507500, 348.0,  507500 , 7607000,true), 100);
+       // algorithm = new Euler(new Rocket(549054 - 507500, 2228,  507500 , 760700000), 100);
+
+        //algorithm = new Euler(new Rocket(1420788.0 - 488370, 5038, 1020788.0, 22819000), 100);
         //algorithm = new Euler(new Rocket(1420788 - 488370, 640, 488370, 22819000, true), 10);
         initChart(test, velocity, "Velocity", "m/s", "Falcon Heavy");
         initChart(test1, height, "height", "m", "Falcon Heavy");

@@ -37,7 +37,7 @@ public class Rocket {
 
     public Rocket(double baseMass, double ISP, double fuel, double force, boolean usesISP) {
         this.baseMass = baseMass;
-        this.massLossRate = force / (Constant.GRAVITATIONAL_ACCELERATION * ISP);
+        this.massLossRate = force / Constant.GRAVITATIONAL_ACCELERATION / ISP;
         System.out.println(massLossRate);
         this.fuel = fuel;
         this.force = force;
@@ -83,6 +83,10 @@ public class Rocket {
                 "\n Masslossrate: " + massLossRate +
                 "\n Force: " + force +
                 "\n Height: " + height + "\n";
+    }
+
+    public double getFullWeigth() {
+        return baseMass + fuel;
     }
 
     public double getResultingForce() {

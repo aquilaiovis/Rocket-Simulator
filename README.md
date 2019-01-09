@@ -10,3 +10,5 @@ IDPA Projektarbeit
 
 
 [Algorithms](http://tnt.phys.uniroma1.it/twiki/pub/TNTgroup/AngeloVulpiani/runge.pdf)
+
+[Falcon 9 stats](https://www.reddit.com/r/spacex/comments/3lsm0q/f9ft_vs_f9v11_fuel_mass_flow_rate_isp/)

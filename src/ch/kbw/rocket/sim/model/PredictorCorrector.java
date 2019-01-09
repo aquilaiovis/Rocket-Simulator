@@ -24,12 +24,12 @@ public class PredictorCorrector extends Algorithm {
         }
     }
 
-    private boolean stalling() {
+    public boolean stalling() {
         return rocket.getFuel() < 0;
     }
 
     private void calculateFuel() {
-        rocket.setFuel(getMass(interval, rocket.getFuel(), rocket.getMassLossRate()));
+     //   rocket.setFuel(getMass(interval, rocket.getFuel(), rocket.getMassLossRate()));
 
     }
 
@@ -52,12 +52,12 @@ public class PredictorCorrector extends Algorithm {
     }
 
     private void calculateResultingForce() {
-        rocket.setResultingForce(getResultingForce(rocket.getForce(), rocket.getGravity()));
+     //   rocket.setResultingForce(getResultingForce(rocket.getForce(), rocket.getGravity()));
 
     }
 
     private void calculateGravitation() {
-        rocket.setGravity(getGravitationalForce(rocket.getBaseMass() + rocket.getFuel(), rocket.getHeight() + Constant.EARTH_RADIUS_KM));
+     //   rocket.setGravity(getGravitationalForce(rocket.getBaseMass() + rocket.getFuel(), rocket.getHeight() + Constant.EARTH_RADIUS_KM));
     }
 
     private void init() {

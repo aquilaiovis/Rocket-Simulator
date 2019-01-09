@@ -10,6 +10,8 @@ public class Euler extends Algorithm {
     @Override
     public void run() {
         startTime = System.currentTimeMillis();
+
+        rocket.setGravity(calculateGravitation(rocket.getBaseMass() + rocket.getFuel(), rocket.getHeight() + Constant.EARTH_RADIUS_M));
         while (running) {
             increment();
         }
@@ -20,11 +22,13 @@ public class Euler extends Algorithm {
     @Override
     public void increment() {
         if (!stalling()) {
-            calculateGravitation();
-            calculateResultingForce();
+
+            rocket.setResultingForce(calculateResultingForce(rocket.getForce(), rocket.getGravity()));
+
             calculateVelocity();
             calculateHeight();
-            calculateFuel();
+
+            rocket.setFuel(calculateNewWeight(interval, rocket.getFuel(), rocket.getMassLossRate()));
             rocket.saveStep(passedTime);
             passedTime += interval;
         } else {
@@ -32,27 +36,17 @@ public class Euler extends Algorithm {
         }
     }
 
-    private boolean stalling() {
-        return rocket.getFuel() < 0;
-    }
-
-    private void calculateGravitation() {
-        // needs distance, distance will be the old one
-        rocket.setGravity(getGravitationalForce(rocket.getBaseMass() + rocket.getFuel(), rocket.getHeight() + Constant.EARTH_RADIUS_KM));
-    }
-
-    private void calculateFuel() {
-        rocket.setFuel(getMass(interval, rocket.getFuel(), rocket.getMassLossRate()));
-    }
-
-    private void calculateResultingForce() {
-        rocket.setResultingForce(getResultingForce(rocket.getForce(), rocket.getGravity()));
-    }
-
     private void calculateVelocity() {
-        System.out.println(rocket.getVelocity());
-        rocket.setVelocity(getVelocity(interval, rocket.getBaseMass() + rocket.getFuel(), rocket.getResultingForce(), rocket.getVelocity()));
+        rocket.setVelocity(getNewSpeed(rocket.getVelocity(), rocket.getHeight()));
     }
+
+    private double getNewSpeed(double v1, double h1) {
+        double m2 = calculateGravitation(rocket.getFuel() + rocket.getBaseMass(), h1 + Constant.EARTH_RADIUS_M);
+        System.out.println(rocket.getGravity()-m2);
+        rocket.setGravity(m2);
+        return (rocket.getForce() - m2) / m2 * interval / 1000.0 + v1;
+    }
+
 
     private void calculateHeight() {
         rocket.setHeight(getHeight(interval, rocket.getHeight(), rocket.getVelocity()));
