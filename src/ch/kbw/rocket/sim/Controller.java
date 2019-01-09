@@ -104,7 +104,7 @@ public class Controller implements Initializable {
         queue.drainTo(list);
         XYChart.Data[] array = new XYChart.Data[list.size()];
         for (int i = 0; i < list.size(); i++) {
-            array[i] = new XYChart.Data(list.get(i).getTimestamp(),list.get(i).getValue());
+            array[i] = new XYChart.Data(list.get(i).getTimestamp() / 1000.0, list.get(i).getValue());
         }
         chart.getData().addAll(array);
     }

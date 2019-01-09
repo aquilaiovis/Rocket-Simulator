@@ -52,7 +52,6 @@ public abstract class Algorithm implements Runnable {
     }
 
     double getMass(long deltaTime/*in ms*/, double oldMass, double massLossRate) {
-        //TODO: look if is zero
         // m2 = m1 - deltaTime * WeightLoss
         return oldMass - deltaTime / 1000.0 * massLossRate;
     }
@@ -62,9 +61,9 @@ public abstract class Algorithm implements Runnable {
         return force - gravitationalForce;
     }
 
-    double getVelocity(long deltaTime, double mass, double resultingForce) {
+    double getVelocity(long deltaTime, double mass, double resultingForce, double oldVelocity) {
         // v2 = deltaTime * (ResultingForce/m1)
-        return deltaTime * resultingForce / mass;
+        return  deltaTime / 1000.0 * resultingForce / mass + oldVelocity;
     }
 
     double getHeight(long deltaTime/*in ms*/, double height, double velocity) {
