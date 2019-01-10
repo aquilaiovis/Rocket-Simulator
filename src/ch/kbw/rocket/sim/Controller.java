@@ -62,13 +62,13 @@ public class Controller implements Initializable {
         algorithms = new ArrayList<>();
         selectableRockets = new ArrayList<>();
         algorithmsGraphs = new HashMap<>();
-        calculationInterval = 10;
+        calculationInterval = 1000;
 
         // Add all default rockets here
-        Rocket falconHeavy = new Rocket("Falcon Heavy", 549054 - 507500, 348, 507500, 7607000);
+        Rocket falconHeavy = new Rocket("Falcon Heavy", 549054 - 507500, 348, 507500, 7607000, true);
         selectableRockets.add(falconHeavy);
         // TODO: Add proper values for Sputnik
-        Rocket sputnik = new Rocket("Sputnik", 267000 - 12345, 678, 12345, 3890000);
+        Rocket sputnik = new Rocket("Sputnik", 267000 - 12345, 678, 12345, 3890000, true);
         selectableRockets.add(sputnik);
 
         updateRocketItemSelection();
@@ -169,14 +169,14 @@ public class Controller implements Initializable {
                 }
                 for (Algorithm algorithm : algorithms) {
                     Rocket algorithmRocket = algorithm.getRocket();
-                    if (algorithm.stalling()) {
-                        addDataQueue(algorithmRocket.getVelocityQueue(), algorithmsGraphs.get(algorithm)[0], algorithm.stalling());
-                        addDataQueue(algorithmRocket.getHeightQueue(), algorithmsGraphs.get(algorithm)[1], algorithm.stalling());
-                        addDataQueue(algorithmRocket.getMassQueue(), algorithmsGraphs.get(algorithm)[2], algorithm.stalling());
-                        addDataQueue(algorithmRocket.getGravityQueue(), algorithmsGraphs.get(algorithm)[3], algorithm.stalling());
-                        addDataQueue(algorithmRocket.getResultingForceQueue(), algorithmsGraphs.get(algorithm)[4], algorithm.stalling());
-                        addDataQueue(algorithmRocket.getJouleForceQueue(), algorithmsGraphs.get(algorithm)[5], algorithm.stalling());
-                    }
+
+                    addDataQueue(algorithmRocket.getVelocityQueue(), algorithmsGraphs.get(algorithm)[0], algorithm.stalling());
+                    addDataQueue(algorithmRocket.getHeightQueue(), algorithmsGraphs.get(algorithm)[1], algorithm.stalling());
+                    addDataQueue(algorithmRocket.getMassQueue(), algorithmsGraphs.get(algorithm)[2], algorithm.stalling());
+                    addDataQueue(algorithmRocket.getGravityQueue(), algorithmsGraphs.get(algorithm)[3], algorithm.stalling());
+                    addDataQueue(algorithmRocket.getResultingForceQueue(), algorithmsGraphs.get(algorithm)[4], algorithm.stalling());
+                    addDataQueue(algorithmRocket.getJouleForceQueue(), algorithmsGraphs.get(algorithm)[5], algorithm.stalling());
+
                 }
             }
         };
@@ -302,9 +302,9 @@ public class Controller implements Initializable {
                 chart.getData().addAll(array);
                 System.out.println("finished....");
             }else {*/
-        Data data = dataQueue.poll();
-        chart.getData().add(new XYChart.Data(data.getTimestamp() / 1000.0, data.getValue()));
-
-
+        if (!dataQueue.isEmpty()) {
+            Data data = dataQueue.poll();
+            chart.getData().add(new XYChart.Data(data.getTimestamp() / 1000.0, data.getValue()));
+        }
     }
 }
