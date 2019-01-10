@@ -5,12 +5,13 @@ import java.util.concurrent.TransferQueue;
 
 public class Rocket {
 
+    private String name;
     private double baseMass;        //in kg
     private double massLossRate;    //in kg/s
     private double fuel;            //in kg
     private double height;          //in m
     private double velocity;        //in m/s
-    private double acceleration;    //
+    private double acceleration;    //in m/s*s
     private double force;           //in N
     private double resultingForce;  //in N
     private double gravity;         //in N
@@ -23,7 +24,8 @@ public class Rocket {
     private TransferQueue<Data> jouleForceQueue = new LinkedTransferQueue<>();
 
 
-    public Rocket(double baseMass, double massLossRate, double fuel, double force) {
+    public Rocket(String name, double baseMass, double massLossRate, double fuel, double force) {
+        this.name = name;
         this.baseMass = baseMass;
         this.massLossRate = massLossRate;
         this.fuel = fuel;
@@ -35,7 +37,8 @@ public class Rocket {
         velocity = 0;
     }
 
-    public Rocket(double baseMass, double ISP, double fuel, double force, boolean usesISP) {
+    public Rocket(String name, double baseMass, double ISP, double fuel, double force, boolean usesISP) {
+        this.name = name;
         this.baseMass = baseMass;
         this.massLossRate = force / Constant.GRAVITATIONAL_ACCELERATION / ISP;
         System.out.println(massLossRate);
@@ -50,6 +53,7 @@ public class Rocket {
 
 
     public Rocket(Rocket rocket) {
+        this.name = rocket.getName();
         this.baseMass = rocket.getBaseMass();
         this.massLossRate = rocket.getMassLossRate();
         this.fuel = rocket.getFuel();
@@ -183,5 +187,10 @@ public class Rocket {
 
     public TransferQueue<Data> getJouleForceQueue() {
         return jouleForceQueue;
+    }
+
+    public String getName()
+    {
+        return name;
     }
 }

@@ -5,259 +5,121 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
-<?import java.lang.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0"
-      prefWidth="1920.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="ch.kbw.rocket.sim.Controller">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.kbw.rocket.sim.Controller">
     <children>
         <AnchorPane prefHeight="1080.0" prefWidth="500.0" style="-fx-background-color: #FFFFFF;">
             <children>
                 <GridPane prefHeight="1080.0" prefWidth="500.0">
                     <columnConstraints>
-                        <ColumnConstraints hgrow="ALWAYS" maxWidth="100.0" minWidth="10.0" prefWidth="60.0"/>
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="341.0" minWidth="10.0" prefWidth="339.0"/>
-                        <ColumnConstraints hgrow="ALWAYS" maxWidth="100.0" minWidth="10.0" prefWidth="60.0"/>
+                        <ColumnConstraints hgrow="ALWAYS" maxWidth="100.0" minWidth="10.0" prefWidth="60.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="341.0" minWidth="10.0" prefWidth="339.0" />
+                        <ColumnConstraints hgrow="ALWAYS" maxWidth="100.0" minWidth="10.0" prefWidth="60.0" />
                     </columnConstraints>
                     <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                        <RowConstraints maxHeight="171.0" minHeight="10.0" prefHeight="171.0" vgrow="SOMETIMES"/>
-                        <RowConstraints maxHeight="115.0" minHeight="10.0" prefHeight="69.0" vgrow="SOMETIMES"/>
+                        <RowConstraints maxHeight="120.0" minHeight="10.0" prefHeight="120.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="240.0" minHeight="10.0" prefHeight="240.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="120.0" minHeight="0.0" prefHeight="120.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="600.0" minHeight="10.0" prefHeight="600.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="78.0" prefWidth="339.0"
-                               text="Rocket Simulartor" textAlignment="CENTER" GridPane.columnIndex="1"
-                               GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="78.0" prefWidth="339.0" text="Rocket Simulator" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                             <font>
-                                <Font name="Arial Bold" size="38.0"/>
+                                <Font name="Arial Bold" size="38.0" />
                             </font>
                             <GridPane.margin>
-                                <Insets left="10.0"/>
+                                <Insets left="10.0" />
                             </GridPane.margin>
                         </Label>
-                        <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                            <children>
-                                <Label prefHeight="44.0" prefWidth="275.0" text="Startgewicht (kg)">
-                                    <font>
-                                        <Font name="Roboto" size="26.0"/>
-                                    </font>
-                                    <VBox.margin>
-                                        <Insets left="10.0"/>
-                                    </VBox.margin>
-                                </Label>
-                                <TextField prefHeight="49.0" prefWidth="271.0"
-                                           style="-fx-background-color: #A1A1A5; -fx-border-radius: 5; -fx-background-radius: 5;"
-                                           text="100">
-                                    <font>
-                                        <Font name="Monospaced Regular" size="25.0"/>
-                                    </font>
-                                    <VBox.margin>
-                                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
-                                    </VBox.margin>
-                                </TextField>
-                            </children>
-                        </VBox>
-                        <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                            <children>
-                                <Label prefHeight="45.0" prefWidth="384.0" text="Gewichtsverlustrate (kg/s)">
-                                    <font>
-                                        <Font name="Roboto" size="26.0"/>
-                                    </font>
-                                    <VBox.margin>
-                                        <Insets left="10.0"/>
-                                    </VBox.margin>
-                                </Label>
-                                <TextField prefHeight="49.0" prefWidth="271.0"
-                                           style="-fx-background-color: #A1A1A5; -fx-border-radius: 5; -fx-background-radius: 5;"
-                                           text="1">
-                                    <font>
-                                        <Font name="Monospaced Regular" size="25.0"/>
-                                    </font>
-                                    <VBox.margin>
-                                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
-                                    </VBox.margin>
-                                </TextField>
-                            </children>
-                        </VBox>
-                        <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                            <children>
-                                <Label prefHeight="44.0" prefWidth="218.0" text="Schubkraft (N)">
-                                    <font>
-                                        <Font name="Roboto" size="26.0"/>
-                                    </font>
-                                    <VBox.margin>
-                                        <Insets left="10.0"/>
-                                    </VBox.margin>
-                                </Label>
-                                <TextField prefHeight="49.0" prefWidth="271.0"
-                                           style="-fx-background-color: #A1A1A5; -fx-border-radius: 5; -fx-background-radius: 5;"
-                                           text="500">
-                                    <font>
-                                        <Font name="Monospaced Regular" size="25.0"/>
-                                    </font>
-                                    <VBox.margin>
-                                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
-                                    </VBox.margin>
-                                </TextField>
-                            </children>
-                        </VBox>
-                        <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                            <children>
-                                <Label prefHeight="45.0" prefWidth="492.0" text="Berechnungsinterval (ms)">
-                                    <font>
-                                        <Font name="Roboto" size="26.0"/>
-                                    </font>
-                                    <VBox.margin>
-                                        <Insets left="10.0"/>
-                                    </VBox.margin>
-                                </Label>
-                                <TextField prefHeight="49.0" prefWidth="271.0"
-                                           style="-fx-background-color: #A1A1A5; -fx-border-radius: 5; -fx-background-radius: 5;"
-                                           text="10">
-                                    <font>
-                                        <Font name="Monospaced Regular" size="25.0"/>
-                                    </font>
-                                    <VBox.margin>
-                                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
-                                    </VBox.margin>
-                                </TextField>
-                            </children>
-                        </VBox>
-                        <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
-                            <children>
-                                <Label prefHeight="44.0" prefWidth="218.0" text="Treibstoff (%)">
-                                    <font>
-                                        <Font name="Roboto" size="26.0"/>
-                                    </font>
-                                    <VBox.margin>
-                                        <Insets left="10.0"/>
-                                    </VBox.margin>
-                                </Label>
-                                <Slider stylesheets="/style.css">
-                                    <VBox.margin>
-                                        <Insets left="10.0" right="10.0" top="10.0"/>
-                                    </VBox.margin>
-                                </Slider>
-                            </children>
-                        </VBox>
-                        <VBox prefHeight="85.0" prefWidth="329.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
-                            <children>
-                                <CheckBox mnemonicParsing="false" prefHeight="25.0" prefWidth="292.0"
-                                          stylesheets="@style.css" text="Komplexe Gravitation" VBox.vgrow="ALWAYS">
-                                    <VBox.margin>
-                                        <Insets bottom="10.0" top="10.0"/>
-                                    </VBox.margin>
-                                    <font>
-                                        <Font name="Roboto" size="18.0"/>
-                                    </font>
-                                </CheckBox>
-                                <CheckBox mnemonicParsing="false" prefHeight="17.0" prefWidth="177.0"
-                                          stylesheets="@style.css" text="Luftwiderstand" VBox.vgrow="ALWAYS">
-                                    <VBox.margin>
-                                        <Insets bottom="10.0" top="10.0"/>
-                                    </VBox.margin>
-                                    <font>
-                                        <Font size="18.0"/>
-                                    </font>
-                                </CheckBox>
-                            </children>
-                            <GridPane.margin>
-                                <Insets left="10.0"/>
-                            </GridPane.margin>
-                        </VBox>
-                        <VBox prefHeight="85.0" prefWidth="329.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
-                            <children>
-                                <Label prefHeight="44.0" prefWidth="218.0" text="Verfahren">
-                                    <font>
-                                        <Font name="Roboto" size="26.0"/>
-                                    </font>
-                                </Label>
-                                <CheckBox mnemonicParsing="false" prefHeight="25.0" prefWidth="292.0"
-                                          stylesheets="@style.css" text="Euler" VBox.vgrow="ALWAYS">
-                                    <font>
-                                        <Font name="Roboto" size="18.0"/>
-                                    </font>
-                                    <VBox.margin>
-                                        <Insets bottom="10.0" top="10.0"/>
-                                    </VBox.margin>
-                                </CheckBox>
-                                <CheckBox mnemonicParsing="false" prefHeight="17.0" prefWidth="177.0"
-                                          stylesheets="@style.css" text="Leapfrog" VBox.vgrow="ALWAYS">
-                                    <font>
-                                        <Font size="18.0"/>
-                                    </font>
-                                    <VBox.margin>
-                                        <Insets bottom="10.0" top="10.0"/>
-                                    </VBox.margin>
-                                </CheckBox>
-                                <CheckBox mnemonicParsing="false" prefHeight="17.0" prefWidth="177.0"
-                                          stylesheets="@style.css" text="Mittelpunkt">
-                                    <font>
-                                        <Font size="18.0"/>
-                                    </font>
-                                    <padding>
-                                        <Insets top="10.0"/>
-                                    </padding>
-                                    <VBox.margin>
-                                        <Insets bottom="10.0" top="10.0"/>
-                                    </VBox.margin>
-                                </CheckBox>
-                            </children>
-                            <GridPane.margin>
-                                <Insets left="10.0"/>
-                            </GridPane.margin>
-                        </VBox>
-                        <Button mnemonicParsing="false" onAction="#handleLaunch" prefHeight="85.0" prefWidth="339.0"
-                                style="-fx-background-color: #EE1D23;" text="Launch" textFill="WHITE"
-                                GridPane.columnIndex="1" GridPane.rowIndex="8">
+                        <Button fx:id="launchButton" mnemonicParsing="false" onAction="#handleLaunch" prefHeight="100.0" prefWidth="340.0" style="-fx-background-color: #23EE1D;" text="Raketenstart" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="2">
                             <font>
-                                <Font name="Roboto" size="46.0"/>
+                                <Font name="Roboto" size="46.0" />
                             </font>
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
                         </Button>
+                  <VBox fx:id="options" prefHeight="85.0" prefWidth="329.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <children>
+                        <Label text="Optionen:">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                        <Button mnemonicParsing="false" onAction="#handleRocketCreation" prefHeight="25.0" prefWidth="329.0" text="eigene Rakete erstellen">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin></Button>
+                        <MenuButton fx:id="rocketSelection" alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="344.0" text="Raketen auswählen...">
+                          <items>
+                            <MenuItem mnemonicParsing="false" text="Action 1" />
+                            <MenuItem mnemonicParsing="false" text="Action 2" />
+                          </items>
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                        </MenuButton>
+                        <MenuButton fx:id="algorithmSelection" alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="338.0" text="Algorithmen auswählen...">
+                          <items>
+                            <MenuItem mnemonicParsing="false" text="Action 1" />
+                            <MenuItem mnemonicParsing="false" text="Action 2" />
+                          </items>
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                        </MenuButton>
+                     </children>
+                     <GridPane.margin>
+                        <Insets bottom="20.0" left="10.0" right="10.0" />
+                     </GridPane.margin>
+                  </VBox>
+                  <Button fx:id="resetButton" disable="true" mnemonicParsing="false" onAction="#handleReset" prefHeight="100.0" prefWidth="340.0" style="-fx-background-color: #EE231D;" text="Reset" textFill="WHITE" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                     <font>
+                        <Font name="Roboto" size="46.0" />
+                     </font>
+                  </Button>
                     </children>
                 </GridPane>
             </children>
         </AnchorPane>
         <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #000015;" HBox.hgrow="ALWAYS">
             <children>
-                <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="1080.0"
-                            prefWidth="1422.0">
+                <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="1080.0" prefWidth="1422.0">
                     <bottom>
                         <HBox prefHeight="400.0" prefWidth="1422.0" BorderPane.alignment="CENTER">
                             <children>
-                                <LineChart fx:id="test1" stylesheets="@style.css">
+                                <LineChart fx:id="bottomLeftGraph" stylesheets="@style.css">
                                     <xAxis>
-                                        <NumberAxis side="BOTTOM"/>
+                                        <NumberAxis side="BOTTOM" />
                                     </xAxis>
                                     <yAxis>
-                                        <NumberAxis side="LEFT"/>
+                                        <NumberAxis side="LEFT" />
                                     </yAxis>
                                 </LineChart>
-                                <LineChart fx:id="test2" stylesheets="@style.css">
+                                <LineChart fx:id="bottomCenterGraph" stylesheets="@style.css">
                                     <xAxis>
-                                        <NumberAxis side="BOTTOM"/>
+                                        <NumberAxis side="BOTTOM" />
                                     </xAxis>
                                     <yAxis>
-                                        <NumberAxis side="LEFT"/>
+                                        <NumberAxis side="LEFT" />
                                     </yAxis>
                                 </LineChart>
-                                <LineChart fx:id="test3" stylesheets="@style.css">
+                                <LineChart fx:id="bottomRightGraph" stylesheets="@style.css">
                                     <xAxis>
-                                        <NumberAxis side="BOTTOM"/>
+                                        <NumberAxis side="BOTTOM" />
                                     </xAxis>
                                     <yAxis>
-                                        <NumberAxis side="LEFT"/>
+                                        <NumberAxis side="LEFT" />
                                     </yAxis>
                                 </LineChart>
                             </children>
@@ -266,37 +128,37 @@
                     <right>
                         <VBox prefHeight="680.0" prefWidth="478.0" BorderPane.alignment="CENTER">
                             <children>
-                                <LineChart fx:id="test4" stylesheets="@style.css">
+                                <LineChart fx:id="topRightGraph" stylesheets="@style.css">
                                     <xAxis>
-                                        <NumberAxis side="BOTTOM"/>
+                                        <NumberAxis side="BOTTOM" />
                                     </xAxis>
                                     <yAxis>
-                                        <NumberAxis side="LEFT"/>
+                                        <NumberAxis side="LEFT" />
                                     </yAxis>
                                 </LineChart>
-                                <LineChart fx:id="test5" stylesheets="@style.css">
+                                <LineChart fx:id="centerRightGraph" stylesheets="@style.css">
                                     <xAxis>
-                                        <NumberAxis side="BOTTOM"/>
+                                        <NumberAxis side="BOTTOM" />
                                     </xAxis>
                                     <yAxis>
-                                        <NumberAxis side="LEFT"/>
+                                        <NumberAxis side="LEFT" />
                                     </yAxis>
                                 </LineChart>
                             </children>
                         </VBox>
                     </right>
                     <left>
-                        <Canvas height="680.0" width="282.0" BorderPane.alignment="CENTER"/>
+                        <Canvas height="680.0" BorderPane.alignment="CENTER" />
                     </left>
                     <center>
-                        <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+                        <VBox prefHeight="680.0" prefWidth="800.0" BorderPane.alignment="CENTER">
                             <children>
-                                <LineChart fx:id="test" prefHeight="680.0" prefWidth="662.0" stylesheets="@style.css">
+                                <LineChart fx:id="mainGraph" prefHeight="680.0" prefWidth="854.0" stylesheets="@style.css">
                                     <xAxis>
-                                        <NumberAxis side="BOTTOM" fx:id="xAxis"/>
+                                        <NumberAxis side="BOTTOM" upperBound="200.0" fx:id="xAxis" />
                                     </xAxis>
                                     <yAxis>
-                                        <NumberAxis fx:id="yAxis" side="LEFT"/>
+                                        <NumberAxis fx:id="yAxis" side="LEFT" />
                                     </yAxis>
                                 </LineChart>
                             </children>
