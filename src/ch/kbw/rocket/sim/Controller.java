@@ -1,9 +1,6 @@
 package ch.kbw.rocket.sim;
 
-import ch.kbw.rocket.sim.model.Algorithm;
-import ch.kbw.rocket.sim.model.Data;
-import ch.kbw.rocket.sim.model.Euler;
-import ch.kbw.rocket.sim.model.Rocket;
+import ch.kbw.rocket.sim.model.*;
 import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -44,7 +41,7 @@ public class Controller implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         //Falcon heavy                               549054 - 507,500           348.0s       507,500   7607000 true
-        algorithm = new Euler(new Rocket(549054 - 507500, 348.0, 507500, 7607000, true), 10000);
+        algorithm = new PredictorCorrector(new Rocket(549054 - 507500, 348.0, 507500, 7607000, true), 1000);
        // algorithm = new Euler(new Rocket(549054 - 507500, 2228,  507500 , 760700000), 100);
 
         //algorithm = new Euler(new Rocket(1420788.0 - 488370, 5038, 1020788.0, 22819000), 100);
