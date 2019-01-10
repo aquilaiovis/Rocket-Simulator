@@ -56,10 +56,7 @@ public abstract class Algorithm implements Runnable {
         return force - gravitationalForce;
     }
 
-    abstract double getVelocity(long deltaTime, double mass, double resultingForce, double oldVelocity);
-
-
-    double getHeight(long deltaTime/*in ms*/, double height, double velocity) {
+    double getNewHeight(long deltaTime/*in ms*/, double height, double velocity) {
         // h2= h1+ deltaTime * v2
         return height + deltaTime / 1000.0 * velocity;
     }
@@ -68,14 +65,13 @@ public abstract class Algorithm implements Runnable {
         return rocket;
     }
 
-    double velocity(long t, double v1) {
-        return getVelocity(t, rocket.getBaseMass() + rocket.getFuel(), rocket.getResultingForce(), v1);
-    }
-
     boolean stalling() {
         return rocket.getFuel() < 0;
     }
 
-
     public abstract void increment();
+
+
+    abstract double getNewVelocity(long deltaTime, double v1);
+
 }

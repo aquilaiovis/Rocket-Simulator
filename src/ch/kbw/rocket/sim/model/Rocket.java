@@ -10,11 +10,11 @@ public class Rocket {
     private double fuel;            //in kg
     private double height;          //in m
     private double velocity;        //in m/s
-    private double acceleration;    // ?
+    private double acceleration;    //
     private double force;           //in N
     private double resultingForce;  //in N
     private double gravity;         //in N
-    //TODO: Convert to Lists
+
     private TransferQueue<Data> massQueue = new LinkedTransferQueue<>();
     private TransferQueue<Data> heightQueue = new LinkedTransferQueue<>();
     private TransferQueue<Data> velocityQueue = new LinkedTransferQueue<>();
