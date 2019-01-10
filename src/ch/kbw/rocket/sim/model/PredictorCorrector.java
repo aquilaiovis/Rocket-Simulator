@@ -42,13 +42,12 @@ public class PredictorCorrector extends Algorithm {
 
     @Override
     double getNewVelocity(long deltaTime, double v1) {
-        return (rocket.getResultingForce()) / rocket.getGravity() * deltaTime / 1000.0 + v1;
+        return (rocket.getResultingForce()) / rocket.getFullWeigth() * deltaTime / 1000.0 + v1;
     }
 
     private void calculatePrediction() {
         double sum = rocket.getVelocity() + getNewVelocity(interval, getNewVelocity(interval, rocket.getVelocity()));
         rocket.setVelocity(sum / 2.0);
-        System.out.println(rocket.getVelocity());
     }
 
 

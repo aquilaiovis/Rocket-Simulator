@@ -32,6 +32,7 @@ public class Euler extends Algorithm {
 
             //updates the height
             rocket.setHeight(getNewHeight(interval, rocket.getHeight(), rocket.getVelocity()));
+
             //updates the weight
             rocket.setFuel(calculateNewWeight(interval, rocket.getFuel(), rocket.getMassLossRate()));
 
@@ -43,13 +44,12 @@ public class Euler extends Algorithm {
     }
 
     private void calculateVelocity() {
-        //rocket.setVelocity(getNewVelocity(interval,rocket.getFullWeigth(),rocket.getResultingForce(),rocket.getVelocity()));
         rocket.setVelocity(getNewVelocity(interval, rocket.getVelocity()));
     }
 
 
     double getNewVelocity(long deltaTime, double v1) {
         // v2 = deltaTime * (ResultingForce/m1)+ v1
-        return (rocket.getResultingForce()) / rocket.getGravity() * deltaTime / 1000.0 + v1;
+        return (rocket.getResultingForce()) / rocket.getFullWeigth() * deltaTime / 1000.0 + v1;
     }
 }

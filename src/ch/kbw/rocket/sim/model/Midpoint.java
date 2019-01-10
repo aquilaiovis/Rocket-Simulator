@@ -10,27 +10,33 @@ public class Midpoint extends Algorithm {
 
     @Override
     public void run() {
-      /*  startTime = System.currentTimeMillis();
+        startTime = System.currentTimeMillis();
 
         rocket.setGravity(calculateGravitation(rocket.getBaseMass() + rocket.getFuel(), rocket.getHeight() + Constant.EARTH_RADIUS_M));
         while (running) {
             increment();
         }
         stopTime = System.currentTimeMillis();
-        logPerformance();*/
+        logPerformance();
     }
 
     @Override
     public void increment() {
         if (!stalling()) {
 
+            //calculates the new gravity
+            rocket.setGravity(calculateGravitation(rocket.getFuel() + rocket.getBaseMass(), rocket.getHeight() + Constant.EARTH_RADIUS_M));
+            //updates the current result force
             rocket.setResultingForce(calculateResultingForce(rocket.getForce(), rocket.getGravity()));
 
             midpointCalculation();
-            calculateHeight();
-            rocket.setGravity(calculateGravitation(rocket.getFuel() + rocket.getBaseMass(), rocket.getHeight() + Constant.EARTH_RADIUS_M));
 
+            //updates the height
+            rocket.setHeight(getNewHeight(interval, rocket.getHeight(), rocket.getVelocity()));
+
+            //updates the weight
             rocket.setFuel(calculateNewWeight(interval, rocket.getFuel(), rocket.getMassLossRate()));
+
             rocket.saveStep(passedTime);
             passedTime += interval;
         } else {
@@ -44,15 +50,14 @@ public class Midpoint extends Algorithm {
     }
 
     private void midpointCalculation() {
-        double k1 = interval / 1000.0 * rocket.getVelocity();
-        double k2 = interval / 1000.0 * getNewSpeed(interval / 2.0, rocket.getVelocity() + k1 / 2);
-        rocket.setVelocity(rocket.getVelocity() + k2);
+        double v = getNewSpeed((rocket.getFullWeigth() + rocket.getBaseMass() + calculateNewWeight(interval, rocket.getFuel(), rocket.getMassLossRate())) / 2, rocket.getVelocity());
+        rocket.setVelocity(v);
     }
 
 
-    private double getNewSpeed(double deltaTime, double v1) {
-        double m2 = calculateGravitation(rocket.getFuel() + rocket.getBaseMass(), rocket.getHeight() + Constant.EARTH_RADIUS_M);
-        return (rocket.getForce() - m2) / m2 * deltaTime / 1000.0 + v1;
+    private double getNewSpeed(double m, double v1) {
+        double m2 = calculateGravitation(m, rocket.getHeight() + Constant.EARTH_RADIUS_M);
+        return (rocket.getForce() - m2) / rocket.getFullWeigth() * interval / 1000.0 + v1;
     }
 
 
