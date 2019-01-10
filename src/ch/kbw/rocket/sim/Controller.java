@@ -57,12 +57,13 @@ public class Controller implements Initializable {
         initializeChart(bottomCenterChart, "mass", "kg");
         initializeChart(bottomRightChart, "gravitation", "N");
         initializeChart(centerRightChart, "ResultingForce", "m/s");
-        initializeChart(topRightChart, "Joules", "J");
+        topRightChart.getXAxis().setLabel("a");
+        initializeChart(topRightChart, "Acceleration to Height", "H");
 
         algorithms = new ArrayList<>();
         selectableRockets = new ArrayList<>();
         algorithmsGraphs = new HashMap<>();
-        calculationInterval = 1000;
+        calculationInterval = 100;
 
         // Add all default rockets here
         Rocket falconHeavy = new Rocket("Falcon Heavy", 549054 - 507500, 348, 507500, 7607000, true);
@@ -175,7 +176,7 @@ public class Controller implements Initializable {
                     addDataQueue(algorithmRocket.getMassQueue(), algorithmsGraphs.get(algorithm)[2], algorithm.stalling());
                     addDataQueue(algorithmRocket.getGravityQueue(), algorithmsGraphs.get(algorithm)[3], algorithm.stalling());
                     addDataQueue(algorithmRocket.getResultingForceQueue(), algorithmsGraphs.get(algorithm)[4], algorithm.stalling());
-                    addDataQueue(algorithmRocket.getJouleForceQueue(), algorithmsGraphs.get(algorithm)[5], algorithm.stalling());
+                    addDataQueue(algorithmRocket.getAccelerationQueue(), algorithmsGraphs.get(algorithm)[5], algorithm.stalling());
 
                 }
             }

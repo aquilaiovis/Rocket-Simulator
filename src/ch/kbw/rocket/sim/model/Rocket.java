@@ -21,7 +21,7 @@ public class Rocket {
     private TransferQueue<Data> velocityQueue = new LinkedTransferQueue<>();
     private TransferQueue<Data> resultingForceQueue = new LinkedTransferQueue<>();
     private TransferQueue<Data> gravityQueue = new LinkedTransferQueue<>();
-    private TransferQueue<Data> jouleForceQueue = new LinkedTransferQueue<>();
+    private TransferQueue<Data> accelerationQueue = new LinkedTransferQueue<>();
 
 
     public Rocket(String name, double baseMass, double massLossRate, double fuel, double force) {
@@ -72,7 +72,7 @@ public class Rocket {
             velocityQueue.put(new Data(velocity, passedTime));
             resultingForceQueue.put(new Data(resultingForce, passedTime));
             gravityQueue.put(new Data(gravity, passedTime));
-            jouleForceQueue.put(new Data(force * height, passedTime));
+            accelerationQueue.put(new Data(height, (long) (getResultingForce() / getFullWeight())));
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -185,12 +185,11 @@ public class Rocket {
         return gravityQueue;
     }
 
-    public TransferQueue<Data> getJouleForceQueue() {
-        return jouleForceQueue;
+    public TransferQueue<Data> getAccelerationQueue() {
+        return accelerationQueue;
     }
 
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 }
