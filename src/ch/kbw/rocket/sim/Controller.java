@@ -73,11 +73,10 @@ public class Controller implements Initializable {
 
         updateRocketItemSelection();
 
-        algorithmsNames = new String[] { Euler.class.getSimpleName(), Midpoint.class.getSimpleName(),
-                PredictorCorrector.class.getSimpleName() };
+        algorithmsNames = new String[]{Euler.class.getSimpleName(), Midpoint.class.getSimpleName(),
+                PredictorCorrector.class.getSimpleName()};
         algorithmItems = new ArrayList<>();
-        for(String algorithmName : algorithmsNames)
-        {
+        for (String algorithmName : algorithmsNames) {
             CheckBox algorithmCheckBox = new CheckBox(algorithmName);
             CustomMenuItem algorithmItem = new CustomMenuItem(algorithmCheckBox);
             algorithmItem.setText(algorithmName);
@@ -110,32 +109,30 @@ public class Controller implements Initializable {
         resetButton.setVisible(true);
 
         ArrayList<Rocket> selectedRockets = new ArrayList<>();
-        for(CustomMenuItem rocketItem : rocketItems) {
-            if(((CheckBox)rocketItem.getContent()).isSelected()) {
-                for(Rocket rocket : selectableRockets) {
-                    if(rocket.getName().equals(rocketItem.getText())) {
+        for (CustomMenuItem rocketItem : rocketItems) {
+            if (((CheckBox) rocketItem.getContent()).isSelected()) {
+                for (Rocket rocket : selectableRockets) {
+                    if (rocket.getName().equals(rocketItem.getText())) {
                         selectedRockets.add(rocket);
                     }
                 }
             }
         }
-        for(Rocket rocket : selectedRockets) {
+        for (Rocket rocket : selectedRockets) {
             ArrayList<Algorithm> algorithmsForThisRocket = new ArrayList<>();
-            for(CustomMenuItem algorithmItem : algorithmItems) {
-                if(((CheckBox)algorithmItem.getContent()).isSelected()) {
-                    if(algorithmItem.getText().equals(algorithmsNames[0])) {
+            for (CustomMenuItem algorithmItem : algorithmItems) {
+                if (((CheckBox) algorithmItem.getContent()).isSelected()) {
+                    if (algorithmItem.getText().equals(algorithmsNames[0])) {
                         algorithmsForThisRocket.add(new Euler(rocket, calculationInterval));
-                    }
-                    else if(algorithmItem.getText().equals(algorithmsNames[1])) {
+                    } else if (algorithmItem.getText().equals(algorithmsNames[1])) {
                         algorithmsForThisRocket.add(new Midpoint(rocket, calculationInterval));
-                    }
-                    else if(algorithmItem.getText().equals(algorithmsNames[2])) {
+                    } else if (algorithmItem.getText().equals(algorithmsNames[2])) {
                         algorithmsForThisRocket.add(new PredictorCorrector(rocket, calculationInterval));
                     }
                 }
             }
 
-            for(Algorithm algorithm : algorithmsForThisRocket) {
+            for (Algorithm algorithm : algorithmsForThisRocket) {
                 XYChart.Series<Number, Number> velocity, height, mass, gravitation, resultingForce, joules;
                 velocity = new XYChart.Series<>();
                 height = new XYChart.Series<>();
@@ -145,8 +142,8 @@ public class Controller implements Initializable {
                 joules = new XYChart.Series<>();
 
                 algorithms.add(algorithm);
-                algorithmsGraphs.put(algorithm, new XYChart.Series[] { velocity, height, mass, gravitation,
-                        resultingForce, joules });
+                algorithmsGraphs.put(algorithm, new XYChart.Series[]{velocity, height, mass, gravitation,
+                        resultingForce, joules});
 
                 String graphName = algorithm.getClass().getSimpleName() + " " + algorithm.getRocket().getName();
                 addGraphToChart(mainChart, velocity, graphName);
@@ -158,7 +155,7 @@ public class Controller implements Initializable {
             }
         }
 
-        for(Algorithm algorithm : algorithms) {
+        for (Algorithm algorithm : algorithms) {
             Thread calculation = new Thread(algorithm);
             calculation.setName(algorithm.getClass().getSimpleName() + " " + algorithm.getRocket().getName() + " Calculation Thread");
             calculation.start();
@@ -170,14 +167,16 @@ public class Controller implements Initializable {
                 if (reset) {
                     stop();
                 }
-                for(Algorithm algorithm : algorithms) {
+                for (Algorithm algorithm : algorithms) {
                     Rocket algorithmRocket = algorithm.getRocket();
-                    addDataQueue(algorithmRocket.getVelocityQueue(), algorithmsGraphs.get(algorithm)[0]);
-                    addDataQueue(algorithmRocket.getHeightQueue(), algorithmsGraphs.get(algorithm)[1]);
-                    addDataQueue(algorithmRocket.getMassQueue(), algorithmsGraphs.get(algorithm)[2]);
-                    addDataQueue(algorithmRocket.getGravityQueue(), algorithmsGraphs.get(algorithm)[3]);
-                    addDataQueue(algorithmRocket.getResultingForceQueue(), algorithmsGraphs.get(algorithm)[4]);
-                    addDataQueue(algorithmRocket.getJouleForceQueue(), algorithmsGraphs.get(algorithm)[5]);
+                    if (algorithm.stalling()) {
+                        addDataQueue(algorithmRocket.getVelocityQueue(), algorithmsGraphs.get(algorithm)[0], algorithm.stalling());
+                        addDataQueue(algorithmRocket.getHeightQueue(), algorithmsGraphs.get(algorithm)[1], algorithm.stalling());
+                        addDataQueue(algorithmRocket.getMassQueue(), algorithmsGraphs.get(algorithm)[2], algorithm.stalling());
+                        addDataQueue(algorithmRocket.getGravityQueue(), algorithmsGraphs.get(algorithm)[3], algorithm.stalling());
+                        addDataQueue(algorithmRocket.getResultingForceQueue(), algorithmsGraphs.get(algorithm)[4], algorithm.stalling());
+                        addDataQueue(algorithmRocket.getJouleForceQueue(), algorithmsGraphs.get(algorithm)[5], algorithm.stalling());
+                    }
                 }
             }
         };
@@ -194,8 +193,7 @@ public class Controller implements Initializable {
         resetButton.setVisible(false);
     }
 
-    public void handleRocketCreation(ActionEvent event)
-    {
+    public void handleRocketCreation(ActionEvent event) {
         // Create the custom dialog.
         Dialog<ArrayList<String>> dialog = new Dialog<>();
         dialog.setTitle("Custom Rocket Creator");
@@ -278,10 +276,9 @@ public class Controller implements Initializable {
         updateRocketItemSelection();
     }
 
-    private void updateRocketItemSelection()
-    {
+    private void updateRocketItemSelection() {
         rocketItems = new ArrayList<>();
-        for(Rocket rocket : selectableRockets) {
+        for (Rocket rocket : selectableRockets) {
             CheckBox rocketCheckBox = new CheckBox(rocket.getName());
             CustomMenuItem rocketItem = new CustomMenuItem(rocketCheckBox);
             rocketItem.setText(rocket.getName());
@@ -291,13 +288,23 @@ public class Controller implements Initializable {
         rocketSelection.getItems().setAll(rocketItems);
     }
 
-    private void addDataQueue(TransferQueue<Data> dataQueue, XYChart.Series chart) {
-        ArrayList<Data> list = new ArrayList<>();
-        dataQueue.drainTo(list);
-        XYChart.Data[] array = new XYChart.Data[list.size()];
-        for (int i = 0; i < list.size(); i++) {
-            array[i] = new XYChart.Data(list.get(i).getTimestamp() / 1000.0, list.get(i).getValue());
-        }
-        chart.getData().addAll(array);
+    private void addDataQueue(TransferQueue<Data> dataQueue, XYChart.Series chart, boolean stalling) {
+           /*
+                ArrayList<Data> list = new ArrayList<>();
+                dataQueue.drainTo(list);
+                XYChart.Data[] array = new XYChart.Data[list.size()];
+                System.out.println("asdsadd");
+                for (int i = 0; i < list.size(); i++) {
+                    array[i] = new XYChart.Data(list.get(i).getTimestamp() / 1000.0, list.get(i).getValue());
+                    System.out.println("copying....");
+                }
+                System.out.println("painting....");
+                chart.getData().addAll(array);
+                System.out.println("finished....");
+            }else {*/
+        Data data = dataQueue.poll();
+        chart.getData().add(new XYChart.Data(data.getTimestamp() / 1000.0, data.getValue()));
+
+
     }
 }

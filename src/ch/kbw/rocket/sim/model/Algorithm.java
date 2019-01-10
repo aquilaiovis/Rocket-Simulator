@@ -65,7 +65,7 @@ public abstract class Algorithm implements Runnable {
         return rocket;
     }
 
-    boolean stalling() {
+    public boolean stalling() {
         return rocket.getFuel() < 0;
     }
 

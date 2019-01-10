@@ -81,7 +81,7 @@ public class Rocket {
     @Override
     public String toString() {
 
-        return "\nRocket data:" +
+        return "\n" + name + " data:" +
                 "\n Basemass: " + baseMass +
                 "\n Fuel: " + fuel +
                 "\n Masslossrate: " + massLossRate +
