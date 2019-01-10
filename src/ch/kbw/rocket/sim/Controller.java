@@ -63,7 +63,7 @@ public class Controller implements Initializable {
         algorithms = new ArrayList<>();
         selectableRockets = new ArrayList<>();
         algorithmsGraphs = new HashMap<>();
-        calculationInterval = 100;
+        calculationInterval = 10;
 
         // Add all default rockets here
         Rocket falconHeavy = new Rocket("Falcon Heavy", 549054 - 507500, 348, 507500, 7607000, true);
@@ -290,7 +290,8 @@ public class Controller implements Initializable {
     }
 
     private void addDataQueue(TransferQueue<Data> dataQueue, XYChart.Series chart, boolean stalling) {
-           /*
+        if (!dataQueue.isEmpty()) {
+            if (stalling) {
                 ArrayList<Data> list = new ArrayList<>();
                 dataQueue.drainTo(list);
                 XYChart.Data[] array = new XYChart.Data[list.size()];
@@ -302,10 +303,12 @@ public class Controller implements Initializable {
                 System.out.println("painting....");
                 chart.getData().addAll(array);
                 System.out.println("finished....");
-            }else {*/
-        if (!dataQueue.isEmpty()) {
-            Data data = dataQueue.poll();
-            chart.getData().add(new XYChart.Data(data.getTimestamp() / 1000.0, data.getValue()));
+            } else {
+
+                Data data = dataQueue.poll();
+                chart.getData().add(new XYChart.Data(data.getTimestamp() / 1000.0, data.getValue()));
+
+            }
         }
     }
 }
