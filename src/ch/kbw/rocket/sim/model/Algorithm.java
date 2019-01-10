@@ -14,7 +14,7 @@ public abstract class Algorithm implements Runnable {
 
     public Algorithm(Rocket rocket, int interval) {
         running = true;
-        this.rocket = rocket;
+        this.rocket = new Rocket(rocket);
         this.interval = interval;
     }
 
