@@ -50,6 +50,6 @@ public class Euler extends Algorithm {
 
     double getNewVelocity(long deltaTime, double v1) {
         // v2 = deltaTime * (ResultingForce/m1)+ v1
-        return (rocket.getResultingForce()) / rocket.getFullWeigth() * deltaTime / 1000.0 + v1;
+        return (rocket.getResultingForce()) / rocket.getFullWeight() * deltaTime / 1000.0 + v1;
     }
 }

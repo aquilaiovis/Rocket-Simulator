@@ -50,14 +50,14 @@ public class Midpoint extends Algorithm {
     }
 
     private void midpointCalculation() {
-        double v = getNewSpeed((rocket.getFullWeigth() + rocket.getBaseMass() + calculateNewWeight(interval, rocket.getFuel(), rocket.getMassLossRate())) / 2, rocket.getVelocity());
+        double v = getNewSpeed((rocket.getFullWeight() + rocket.getBaseMass() + calculateNewWeight(interval, rocket.getFuel(), rocket.getMassLossRate())) / 2, rocket.getVelocity());
         rocket.setVelocity(v);
     }
 
 
     private double getNewSpeed(double m, double v1) {
         double m2 = calculateGravitation(m, rocket.getHeight() + Constant.EARTH_RADIUS_M);
-        return (rocket.getForce() - m2) / rocket.getFullWeigth() * interval / 1000.0 + v1;
+        return (rocket.getForce() - m2) / rocket.getFullWeight() * interval / 1000.0 + v1;
     }
 
 
