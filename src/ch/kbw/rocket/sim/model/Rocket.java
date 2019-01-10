@@ -89,7 +89,7 @@ public class Rocket {
                 "\n Height: " + height + "\n";
     }
 
-    public double getFullWeigth() {
+    public double getFullWeight() {
         return baseMass + fuel;
     }
 
