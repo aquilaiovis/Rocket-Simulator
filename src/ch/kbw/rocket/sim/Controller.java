@@ -309,21 +309,25 @@ public class Controller implements Initializable {
     }
 
     private void addDataQueue(TransferQueue<Data> dataQueue, XYChart.Series chart, boolean stalling) {
-       /*
-        ArrayList<Data> list = new ArrayList<>();
-        dataQueue.drainTo(list);
-        XYChart.Data[] array = new XYChart.Data[list.size()];
-        for (int i = 0; i < list.size(); i++) {
-            array[i] = new XYChart.Data(list.get(i).getTimestamp() / 1000.0, list.get(i).getValue());
-            System.out.println("copying....");
-        }
-        System.out.println("painting....");
-        chart.getData().addAll(array);
-        System.out.println("finished....");
-        */
         if (!dataQueue.isEmpty()) {
-            Data data = dataQueue.poll();
-            chart.getData().add(new XYChart.Data(data.getTimestamp() / 1000.0, data.getValue()));
+            if (stalling) {
+                ArrayList<Data> list = new ArrayList<>();
+                dataQueue.drainTo(list);
+                XYChart.Data[] array = new XYChart.Data[list.size()];
+                System.out.println("asdsadd");
+                for (int i = 0; i < list.size(); i++) {
+                    array[i] = new XYChart.Data(list.get(i).getTimestamp() / 1000.0, list.get(i).getValue());
+                    System.out.println("copying....");
+                }
+                System.out.println("painting....");
+                chart.getData().addAll(array);
+                System.out.println("finished....");
+            } else {
+
+                Data data = dataQueue.poll();
+                chart.getData().add(new XYChart.Data(data.getTimestamp() / 1000.0, data.getValue()));
+
+            }
         }
     }
 }
