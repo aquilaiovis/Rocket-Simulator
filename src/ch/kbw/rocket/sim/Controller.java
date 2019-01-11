@@ -58,7 +58,7 @@ public class Controller implements Initializable {
         selectableRockets = new ArrayList<>();
 
         // Add all default rockets here
-        Rocket falconHeavy = new Rocket("Falcon Heavy", 549054 - 507500, 348, 507500, 7607000, true);
+        Rocket falconHeavy = new Rocket("Falcon 9", 549054 - 507500, 348, 507500, 7607000, true);
         selectableRockets.add(falconHeavy);
         // TODO: Add proper values for Sputnik
         Rocket sputnik = new Rocket("Sputnik", 267000 - 12345, 678, 12345, 3890000, true);
