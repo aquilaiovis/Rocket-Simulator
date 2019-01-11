@@ -23,7 +23,6 @@ public class Rocket {
     private TransferQueue<Data> gravityQueue = new LinkedTransferQueue<>();
     private TransferQueue<Data> accelerationQueue = new LinkedTransferQueue<>();
 
-
     public Rocket(String name, double baseMass, double massLossRate, double fuel, double force) {
         this.name = name;
         this.baseMass = baseMass;
@@ -65,7 +64,7 @@ public class Rocket {
         this.gravity = rocket.getGravity();
     }
 
-    public void saveStep(long passedTime) {
+    void saveStep(long passedTime) {
         try {
             massQueue.put(new Data(baseMass + fuel, passedTime));
             heightQueue.put(new Data(height, passedTime));
@@ -89,39 +88,31 @@ public class Rocket {
                 "\n Height: " + height + "\n";
     }
 
-    public double getFullWeight() {
+    double getFullWeight() {
         return baseMass + fuel;
     }
 
-    public double getResultingForce() {
+    double getResultingForce() {
         return resultingForce;
     }
 
-    public void setResultingForce(double resultingForce) {
+    void setResultingForce(double resultingForce) {
         this.resultingForce = resultingForce;
     }
 
-    public double getBaseMass() {
+    double getBaseMass() {
         return baseMass;
     }
 
-    public void setBaseMass(double baseMass) {
-        this.baseMass = baseMass;
-    }
-
-    public double getMassLossRate() {
+    double getMassLossRate() {
         return massLossRate;
     }
 
-    public void setMassLossRate(double massLossRate) {
-        this.massLossRate = massLossRate;
-    }
-
-    public double getFuel() {
+    double getFuel() {
         return fuel;
     }
 
-    public void setFuel(double fuel) {
+    void setFuel(double fuel) {
         this.fuel = fuel;
     }
 
@@ -133,15 +124,15 @@ public class Rocket {
         this.height = height;
     }
 
-    public double getVelocity() {
+    double getVelocity() {
         return velocity;
     }
 
-    public void setVelocity(double velocity) {
+    void setVelocity(double velocity) {
         this.velocity = velocity;
     }
 
-    public double getAcceleration() {
+    private double getAcceleration() {
         return acceleration;
     }
 
@@ -157,11 +148,11 @@ public class Rocket {
         this.force = force;
     }
 
-    public double getGravity() {
+    double getGravity() {
         return gravity;
     }
 
-    public void setGravity(double gravity) {
+    void setGravity(double gravity) {
         this.gravity = gravity;
     }
 

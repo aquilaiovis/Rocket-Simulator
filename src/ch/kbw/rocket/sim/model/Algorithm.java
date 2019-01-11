@@ -1,6 +1,5 @@
 package ch.kbw.rocket.sim.model;
 
-
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -11,8 +10,7 @@ public abstract class Algorithm implements Runnable {
     long passedTime, startTime, stopTime;
     boolean running;
 
-
-    public Algorithm(Rocket rocket, int interval) {
+    Algorithm(Rocket rocket, int interval) {
         running = true;
         this.rocket = new Rocket(rocket);
         this.interval = interval;
@@ -73,8 +71,7 @@ public abstract class Algorithm implements Runnable {
 
     abstract double getNewVelocity(long deltaTime, double v1);
 
-    public void setRunning(boolean running)
-    {
+    public void setRunning(boolean running) {
         this.running = running;
     }
 }
