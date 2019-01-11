@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.scene.canvas.*?>
 <?import javafx.scene.chart.*?>
 <?import javafx.geometry.*?>
@@ -97,6 +98,9 @@
                                     <yAxis>
                                         <NumberAxis side="LEFT" />
                                     </yAxis>
+                           <HBox.margin>
+                              <Insets bottom="50.0" />
+                           </HBox.margin>
                                 </LineChart>
                                 <LineChart fx:id="bottomCenterChart" stylesheets="@style.css">
                                     <xAxis>
@@ -105,6 +109,9 @@
                                     <yAxis>
                                         <NumberAxis side="LEFT" />
                                     </yAxis>
+                           <HBox.margin>
+                              <Insets bottom="50.0" />
+                           </HBox.margin>
                                 </LineChart>
                                 <LineChart fx:id="bottomRightChart" stylesheets="@style.css">
                                     <xAxis>
@@ -113,6 +120,9 @@
                                     <yAxis>
                                         <NumberAxis side="LEFT" />
                                     </yAxis>
+                           <HBox.margin>
+                              <Insets bottom="50.0" />
+                           </HBox.margin>
                                 </LineChart>
                             </children>
                         </HBox>

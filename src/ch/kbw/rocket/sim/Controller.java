@@ -52,17 +52,7 @@ public class Controller implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        initializeChart(mainChart, "Velocity", "m/s");
-        initializeChart(bottomChart, "height", "m");
-        initializeChart(bottomCenterChart, "mass", "kg");
-        initializeChart(bottomRightChart, "gravitation", "N");
-        initializeChart(centerRightChart, "ResultingForce", "m/s");
-        topRightChart.getXAxis().setLabel("a");
-        initializeChart(topRightChart, "Acceleration to Height", "H");
-
-        algorithms = new ArrayList<>();
         selectableRockets = new ArrayList<>();
-        algorithmsGraphs = new HashMap<>();
         calculationInterval = 100;
 
         // Add all default rockets here
@@ -103,11 +93,30 @@ public class Controller implements Initializable {
     }
 
     public void handleLaunch(ActionEvent event) {
+
         options.setDisable(true);
         launchButton.setDisable(true);
         launchButton.setVisible(false);
         resetButton.setDisable(false);
         resetButton.setVisible(true);
+
+        algorithms = new ArrayList<>();
+        algorithmsGraphs = new HashMap<>();
+
+        mainChart.getData().clear();
+        bottomChart.getData().clear();
+        bottomCenterChart.getData().clear();
+        bottomRightChart.getData().clear();
+        centerRightChart.getData().clear();
+        topRightChart.getData().clear();
+
+        initializeChart(mainChart, "Velocity", "m/s");
+        initializeChart(bottomChart, "height", "m");
+        initializeChart(bottomCenterChart, "mass", "kg");
+        initializeChart(bottomRightChart, "gravitation", "N");
+        initializeChart(centerRightChart, "ResultingForce", "m/s");
+        topRightChart.getXAxis().setLabel("a");
+        initializeChart(topRightChart, "Acceleration to Height", "H");
 
         ArrayList<Rocket> selectedRockets = new ArrayList<>();
         for (CustomMenuItem rocketItem : rocketItems) {
@@ -185,36 +194,34 @@ public class Controller implements Initializable {
     }
 
     public void handleReset(ActionEvent event) {
-        // TODO: Make Threads end
         reset = true;
         options.setDisable(false);
         launchButton.setDisable(false);
         launchButton.setVisible(true);
         resetButton.setDisable(true);
         resetButton.setVisible(false);
+        for(Algorithm algorithm : algorithms)
+        {
+            algorithm.setRunning(false);
+        }
     }
 
     public void handleRocketCreation(ActionEvent event) {
-        // Create the custom dialog.
+
         Dialog<ArrayList<String>> dialog = new Dialog<>();
         dialog.setTitle("Custom Rocket Creator");
         dialog.setHeaderText("Erstelle deine eigene Rakete!");
 
-        // Set the icon (must be included in the project).
-        // dialog.setGraphic(new ImageView(this.getClass().getResource("login.png").toString()));
-
-        // Set the button types.
         ButtonType confirmButtonType = new ButtonType("Confirm", ButtonBar.ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().addAll(confirmButtonType, ButtonType.CANCEL);
 
-        // Create the username and password labels and fields.
         GridPane grid = new GridPane();
         grid.setHgap(10);
         grid.setVgap(10);
         grid.setPadding(new Insets(20, 150, 10, 10));
 
         TextField name = new TextField();
-        name.setPromptText("Name");
+        name.setPromptText("Name der Rakete");
         TextField weight = new TextField();
         name.setPromptText("Gewicht in kg");
         TextField weightLossRate = new TextField();
@@ -224,7 +231,7 @@ public class Controller implements Initializable {
         TextField thrust = new TextField();
         name.setPromptText("Schubkraft in N");
 
-        grid.add(new Label("Name:"), 0, 0);
+        grid.add(new Label("Name der Rakete:"), 0, 0);
         grid.add(name, 1, 0);
         grid.add(new Label("Gewicht in kg (ohne Treibstoff):"), 0, 1);
         grid.add(weight, 1, 1);
@@ -235,21 +242,17 @@ public class Controller implements Initializable {
         grid.add(new Label("Schubkraft in N:"), 0, 4);
         grid.add(thrust, 1, 4);
 
-        // Enable/Disable login button depending on whether a username was entered.
         Node confirmButton = dialog.getDialogPane().lookupButton(confirmButtonType);
         confirmButton.setDisable(true);
 
-        // Do some validation (using the Java 8 lambda syntax).
         name.textProperty().addListener((observable, oldValue, newValue) -> {
             confirmButton.setDisable(newValue.trim().isEmpty());
         });
 
         dialog.getDialogPane().setContent(grid);
 
-        // Request focus on the username field by default.
         Platform.runLater(() -> name.requestFocus());
 
-        // Convert the result to a username-password-pair when the login button is clicked.
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == confirmButtonType) {
                 ArrayList<String> inputs = new ArrayList<>();
@@ -266,12 +269,28 @@ public class Controller implements Initializable {
         Optional<ArrayList<String>> result = dialog.showAndWait();
 
         result.ifPresent(content -> {
-            // TODO: Add regex check if number
-            selectableRockets.add(new Rocket(result.get().get(0),
-                    Double.parseDouble(result.get().get(1)),
-                    Double.parseDouble(result.get().get(2)),
-                    Double.parseDouble(result.get().get(3)),
-                    Double.parseDouble(result.get().get(4))));
+            if(result.get().get(1).matches("[0-9]+[.]?[0-9]*")
+                    && result.get().get(2).matches("[0-9]+[.]?[0-9]*")
+                    && result.get().get(3).matches("[0-9]+[.]?[0-9]*")
+                    && result.get().get(4).matches("[0-9]+[.]?[0-9]*"))
+            {
+                selectableRockets.add(new Rocket(result.get().get(0),
+                        Double.parseDouble(result.get().get(1)),
+                        Double.parseDouble(result.get().get(2)),
+                        Double.parseDouble(result.get().get(3)),
+                        Double.parseDouble(result.get().get(4))));
+            }
+            else
+            {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Invalid Content");
+                alert.setHeaderText("Value/s of wrong type!");
+                alert.setContentText("The rocket could not be created due to one or more values not being decimal numbers.");
+
+                alert.showAndWait();
+
+                handleRocketCreation(null);
+            }
         });
 
         updateRocketItemSelection();
@@ -290,19 +309,18 @@ public class Controller implements Initializable {
     }
 
     private void addDataQueue(TransferQueue<Data> dataQueue, XYChart.Series chart, boolean stalling) {
-           /*
-                ArrayList<Data> list = new ArrayList<>();
-                dataQueue.drainTo(list);
-                XYChart.Data[] array = new XYChart.Data[list.size()];
-                System.out.println("asdsadd");
-                for (int i = 0; i < list.size(); i++) {
-                    array[i] = new XYChart.Data(list.get(i).getTimestamp() / 1000.0, list.get(i).getValue());
-                    System.out.println("copying....");
-                }
-                System.out.println("painting....");
-                chart.getData().addAll(array);
-                System.out.println("finished....");
-            }else {*/
+       /*
+        ArrayList<Data> list = new ArrayList<>();
+        dataQueue.drainTo(list);
+        XYChart.Data[] array = new XYChart.Data[list.size()];
+        for (int i = 0; i < list.size(); i++) {
+            array[i] = new XYChart.Data(list.get(i).getTimestamp() / 1000.0, list.get(i).getValue());
+            System.out.println("copying....");
+        }
+        System.out.println("painting....");
+        chart.getData().addAll(array);
+        System.out.println("finished....");
+        */
         if (!dataQueue.isEmpty()) {
             Data data = dataQueue.poll();
             chart.getData().add(new XYChart.Data(data.getTimestamp() / 1000.0, data.getValue()));

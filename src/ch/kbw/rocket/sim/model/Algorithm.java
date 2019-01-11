@@ -71,7 +71,10 @@ public abstract class Algorithm implements Runnable {
 
     public abstract void increment();
 
-
     abstract double getNewVelocity(long deltaTime, double v1);
 
+    public void setRunning(boolean running)
+    {
+        this.running = running;
+    }
 }

@@ -5,9 +5,7 @@ IDPA Projektarbeit
 
 [Falcon heavy Referenz](https://www.flightclub.io/result/2d?code=FHD1)
 
-
 [Interesting usage of y and x axis](https://i.redd.it/8mwqvbd2n5py.png)
-
 
 [Algorithms](http://tnt.phys.uniroma1.it/twiki/pub/TNTgroup/AngeloVulpiani/runge.pdf)
 
