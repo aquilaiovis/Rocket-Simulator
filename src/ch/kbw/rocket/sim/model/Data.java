@@ -1,6 +1,7 @@
 package ch.kbw.rocket.sim.model;
 
 public class Data {
+
     private double value;
     private long timestamp;
 

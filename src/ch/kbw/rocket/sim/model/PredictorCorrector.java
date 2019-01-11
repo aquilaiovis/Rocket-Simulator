@@ -7,15 +7,8 @@ public class PredictorCorrector extends Algorithm {
         passedTime = 0;
     }
 
-    private void init() {
-        calculateGravitation();
-        calculateResultingForce();
-        rocket.setVelocity(getNewVelocity(interval, rocket.getVelocity()));
-    }
-
     @Override
     public void run() {
-        init();
         startTime = System.currentTimeMillis();
 
         while (running) {
@@ -30,12 +23,13 @@ public class PredictorCorrector extends Algorithm {
     public void increment() {
         if (!stalling()) {
             //calculate gravitational force
-            calculateGravitation();
+            rocket.setGravity(calculateGravitation(rocket.getBaseMass() + rocket.getFuel(), rocket.getHeight() + Constant.EARTH_RADIUS_M));
 
             //calculate resulting force
-            calculateResultingForce();
+            rocket.setResultingForce(calculateResultingForce(rocket.getForce(), rocket.getGravity()));
 
             calculatePrediction();
+
             //calculates new height
             rocket.setHeight(getNewHeight(interval, rocket.getHeight(), rocket.getVelocity()));
 
@@ -57,13 +51,5 @@ public class PredictorCorrector extends Algorithm {
     private void calculatePrediction() {
         double sum = rocket.getVelocity() + getNewVelocity(interval, getNewVelocity(interval, rocket.getVelocity()));
         rocket.setVelocity(sum / 2.0);
-    }
-
-    private void calculateResultingForce() {
-        rocket.setResultingForce(calculateResultingForce(rocket.getForce(), rocket.getGravity()));
-    }
-
-    private void calculateGravitation() {
-        rocket.setGravity(calculateGravitation(rocket.getBaseMass() + rocket.getFuel(), rocket.getHeight() + Constant.EARTH_RADIUS_M));
     }
 }

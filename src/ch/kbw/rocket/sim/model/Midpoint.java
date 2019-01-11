@@ -11,7 +11,6 @@ public class Midpoint extends Algorithm {
     public void run() {
         startTime = System.currentTimeMillis();
 
-        rocket.setGravity(calculateGravitation(rocket.getBaseMass() + rocket.getFuel(), rocket.getHeight() + Constant.EARTH_RADIUS_M));
         while (running) {
             increment();
         }

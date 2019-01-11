@@ -5,15 +5,40 @@ import java.io.IOException;
 import java.text.DateFormat;
 
 public abstract class Algorithm implements Runnable {
+
     Rocket rocket;
     int interval;
-    long passedTime, startTime, stopTime;
     boolean running;
+    long passedTime, startTime, stopTime;
 
     Algorithm(Rocket rocket, int interval) {
         running = true;
         this.rocket = new Rocket(rocket);
         this.interval = interval;
+    }
+
+    public abstract void increment();
+
+    abstract double getNewVelocity(long deltaTime, double v1);
+
+    double calculateGravitation(double mass, double r) {
+        // g * (m1 * m2 / r*r)
+        return Constant.GRAVITATIONAL * (mass * Constant.EARTH_MASS / Math.pow(r, 2));
+    }
+
+    double calculateNewWeight(long deltaTime/*in ms*/, double oldMass, double massLossRate) {
+        // m2 = m1 - deltaTime * WeightLoss
+        return oldMass - deltaTime / 1000.0 * massLossRate;
+    }
+
+    double calculateResultingForce(double force, double gravitationalForce) {
+        // ResultingForce = Force - gravitation
+        return force - gravitationalForce;
+    }
+
+    double getNewHeight(long deltaTime/*in ms*/, double height, double velocity) {
+        // h2= h1+ deltaTime * v2
+        return height + deltaTime / 1000.0 * velocity;
     }
 
     void logPerformance() {
@@ -39,26 +64,6 @@ public abstract class Algorithm implements Runnable {
         return DateFormat.getDateInstance(DateFormat.SHORT).format(millis);
     }
 
-    double calculateGravitation(double mass, double r) {
-        // g * (m1 * m2 / r*r)
-        return Constant.GRAVITATIONAL * (mass * Constant.EARTH_MASS / Math.pow(r, 2));
-    }
-
-    double calculateNewWeight(long deltaTime/*in ms*/, double oldMass, double massLossRate) {
-        // m2 = m1 - deltaTime * WeightLoss
-        return oldMass - deltaTime / 1000.0 * massLossRate;
-    }
-
-    double calculateResultingForce(double force, double gravitationalForce) {
-        // ResultingForce = Force - gravitation
-        return force - gravitationalForce;
-    }
-
-    double getNewHeight(long deltaTime/*in ms*/, double height, double velocity) {
-        // h2= h1+ deltaTime * v2
-        return height + deltaTime / 1000.0 * velocity;
-    }
-
     public Rocket getRocket() {
         return rocket;
     }
@@ -66,10 +71,6 @@ public abstract class Algorithm implements Runnable {
     public boolean stalling() {
         return rocket.getFuel() < 0;
     }
-
-    public abstract void increment();
-
-    abstract double getNewVelocity(long deltaTime, double v1);
 
     public void setRunning(boolean running) {
         this.running = running;

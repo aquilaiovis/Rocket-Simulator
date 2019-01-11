@@ -136,10 +136,6 @@ public class Rocket {
         return acceleration;
     }
 
-    public void setAcceleration(double acceleration) {
-        this.acceleration = acceleration;
-    }
-
     public double getForce() {
         return force;
     }
