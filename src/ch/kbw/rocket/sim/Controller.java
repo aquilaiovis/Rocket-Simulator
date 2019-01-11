@@ -40,6 +40,9 @@ public class Controller implements Initializable {
     private LineChart<Number, Number> mainChart, bottomChart, bottomCenterChart, bottomRightChart,
             centerRightChart, topRightChart;
 
+    @FXML
+    private TextField calculationIntervalField;
+
     // Each rocket has it's own algorithm!
     private String[] algorithmsNames;
     private ArrayList<Algorithm> algorithms;
@@ -53,7 +56,6 @@ public class Controller implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         selectableRockets = new ArrayList<>();
-        calculationInterval = 100;
 
         // Add all default rockets here
         Rocket falconHeavy = new Rocket("Falcon Heavy", 549054 - 507500, 348, 507500, 7607000, true);
@@ -93,6 +95,10 @@ public class Controller implements Initializable {
     }
 
     public void handleLaunch(ActionEvent event) {
+        if(calculationIntervalField.getText() == null) return;
+        if(!calculationIntervalField.getText().matches("[0-9]+")) return;
+
+        calculationInterval = Integer.parseInt(calculationIntervalField.getText());
 
         options.setDisable(true);
         launchButton.setDisable(true);
@@ -119,30 +125,43 @@ public class Controller implements Initializable {
         initializeChart(topRightChart, "Acceleration to Height", "H");
 
         ArrayList<Rocket> selectedRockets = new ArrayList<>();
-        for (CustomMenuItem rocketItem : rocketItems) {
-            if (((CheckBox) rocketItem.getContent()).isSelected()) {
-                for (Rocket rocket : selectableRockets) {
-                    if (rocket.getName().equals(rocketItem.getText())) {
+        for (CustomMenuItem rocketItem : rocketItems)
+        {
+            if (((CheckBox) rocketItem.getContent()).isSelected())
+            {
+                for (Rocket rocket : selectableRockets)
+                {
+                    if (rocket.getName().equals(rocketItem.getText()))
+                    {
                         selectedRockets.add(rocket);
                     }
                 }
             }
         }
-        for (Rocket rocket : selectedRockets) {
+        for (Rocket rocket : selectedRockets)
+        {
             ArrayList<Algorithm> algorithmsForThisRocket = new ArrayList<>();
-            for (CustomMenuItem algorithmItem : algorithmItems) {
-                if (((CheckBox) algorithmItem.getContent()).isSelected()) {
-                    if (algorithmItem.getText().equals(algorithmsNames[0])) {
+            for (CustomMenuItem algorithmItem : algorithmItems)
+            {
+                if (((CheckBox) algorithmItem.getContent()).isSelected())
+                {
+                    if (algorithmItem.getText().equals(algorithmsNames[0]))
+                    {
                         algorithmsForThisRocket.add(new Euler(rocket, calculationInterval));
-                    } else if (algorithmItem.getText().equals(algorithmsNames[1])) {
+                    }
+                    else if (algorithmItem.getText().equals(algorithmsNames[1]))
+                    {
                         algorithmsForThisRocket.add(new Midpoint(rocket, calculationInterval));
-                    } else if (algorithmItem.getText().equals(algorithmsNames[2])) {
+                    }
+                    else if (algorithmItem.getText().equals(algorithmsNames[2]))
+                    {
                         algorithmsForThisRocket.add(new PredictorCorrector(rocket, calculationInterval));
                     }
                 }
             }
 
-            for (Algorithm algorithm : algorithmsForThisRocket) {
+            for (Algorithm algorithm : algorithmsForThisRocket)
+            {
                 XYChart.Series<Number, Number> velocity, height, mass, gravitation, resultingForce, joules;
                 velocity = new XYChart.Series<>();
                 height = new XYChart.Series<>();
@@ -165,19 +184,24 @@ public class Controller implements Initializable {
             }
         }
 
-        for (Algorithm algorithm : algorithms) {
+        for (Algorithm algorithm : algorithms)
+        {
             Thread calculation = new Thread(algorithm);
             calculation.setName(algorithm.getClass().getSimpleName() + " " + algorithm.getRocket().getName() + " Calculation Thread");
             calculation.start();
         }
 
-        AnimationTimer animationTimer = new AnimationTimer() {
+        AnimationTimer animationTimer = new AnimationTimer()
+        {
             @Override
-            public void handle(long now) {
-                if (reset) {
+            public void handle(long now)
+            {
+                if (reset)
+                {
                     stop();
                 }
-                for (Algorithm algorithm : algorithms) {
+                for (Algorithm algorithm : algorithms)
+                {
                     Rocket algorithmRocket = algorithm.getRocket();
 
                     addDataQueue(algorithmRocket.getVelocityQueue(), algorithmsGraphs.get(algorithm)[0], algorithm.stalling());

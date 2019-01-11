@@ -20,8 +20,8 @@
                     </columnConstraints>
                     <rowConstraints>
                         <RowConstraints maxHeight="120.0" minHeight="10.0" prefHeight="120.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="240.0" minHeight="10.0" prefHeight="240.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="120.0" minHeight="0.0" prefHeight="120.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="360.0" minHeight="10.0" prefHeight="360.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="120.0" minHeight="0.0" prefHeight="120.0" vgrow="SOMETIMES" />
                   <RowConstraints maxHeight="600.0" minHeight="10.0" prefHeight="600.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
@@ -33,7 +33,7 @@
                                 <Insets left="10.0" />
                             </GridPane.margin>
                         </Label>
-                  <VBox fx:id="options" prefHeight="85.0" prefWidth="329.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <VBox fx:id="options" prefHeight="100.0" prefWidth="329.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <children>
                         <Label text="Optionen:">
                            <font>
@@ -63,6 +63,14 @@
                               <Insets top="20.0" />
                            </VBox.margin>
                         </MenuButton>
+                        <TextField fx:id="calculationIntervalField" promptText="Berechnungsinterval in ms">
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </TextField>
                      </children>
                      <GridPane.margin>
                         <Insets bottom="20.0" left="10.0" right="10.0" />
