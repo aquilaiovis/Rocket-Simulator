@@ -1,7 +1,7 @@
 # Rocket-Simulator
 IDPA Projektarbeit
 
-[Dokumentation](https://docs.google.com/document/d/1BTnFGpBF-Vc2w0m2A7PsTArUT4h40YAQtCCJ7Eppf8E/edit?usp=sharing)
+[Dokumentation](https://kbwk-my.sharepoint.com/:w:/g/personal/manuel_strenge_kbw_ch/EVlHC7_qbktAnBWM33jYZ2wBBtZEad3UBT4rzyLf2HcNQA?e=JtMLTK)
 
 [Falcon heavy Referenz](https://www.flightclub.io/result/2d?code=FHD1)
 

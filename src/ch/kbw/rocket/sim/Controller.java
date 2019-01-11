@@ -15,6 +15,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,8 +38,7 @@ public class Controller implements Initializable {
     private NumberAxis xAxis, yAxis;
 
     @FXML
-    private LineChart<Number, Number> mainChart, bottomLeftChart, bottomCenterChart, bottomRightChart,
-            centerRightChart, topRightChart;
+    private LineChart<Number, Number> mainChart, bottomLeftChart, bottomCenterChart, bottomRightChart, centerRightChart, topRightChart;
 
     @FXML
     private TextField calculationIntervalField;
@@ -60,9 +60,12 @@ public class Controller implements Initializable {
         // Add all default rockets here
         Rocket falconHeavy = new Rocket("Falcon 9", 549054 - 507500, 348, 507500, 7607000, true);
         selectableRockets.add(falconHeavy);
-        // TODO: Add proper values for Sputnik
-        Rocket sputnik = new Rocket("Sputnik", 267000 - 12345, 678, 12345, 3890000, true);
+
+        Rocket sputnik = new Rocket("Sputnik center stage",  7100, 315, 950000 - 7100, 804000, true);
         selectableRockets.add(sputnik);
+
+        Rocket shuttle = new Rocket("Space shuttle",  109.000 + 26556, 455+269, 204600 - 109.000 - 26556, 30000000, true);
+        selectableRockets.add(shuttle);
 
         updateRocketItemSelection();
 
@@ -95,12 +98,12 @@ public class Controller implements Initializable {
     }
 
     public void handleLaunch(ActionEvent event) {
-        if(calculationIntervalField.getText() == null) {
+        if (calculationIntervalField.getText() == null) {
             displayErrorDialog("No entry", "Must enter an amount!",
                     "Please enter a whole number for the field Berechnungsinterval.");
             return;
         }
-        if(!calculationIntervalField.getText().matches("[0-9]+")) {
+        if (!calculationIntervalField.getText().matches("[0-9]+")) {
             displayErrorDialog("Invalid entry", "Whole numbers only!",
                     "Please enter a whole number for the field Berechnungsinterval.");
             return;
@@ -133,43 +136,30 @@ public class Controller implements Initializable {
         initializeChart(topRightChart, "Acceleration to Height", "H");
 
         ArrayList<Rocket> selectedRockets = new ArrayList<>();
-        for (CustomMenuItem rocketItem : rocketItems)
-        {
-            if (((CheckBox) rocketItem.getContent()).isSelected())
-            {
-                for (Rocket rocket : selectableRockets)
-                {
-                    if (rocket.getName().equals(rocketItem.getText()))
-                    {
+        for (CustomMenuItem rocketItem : rocketItems) {
+            if (((CheckBox) rocketItem.getContent()).isSelected()) {
+                for (Rocket rocket : selectableRockets) {
+                    if (rocket.getName().equals(rocketItem.getText())) {
                         selectedRockets.add(rocket);
                     }
                 }
             }
         }
-        for (Rocket rocket : selectedRockets)
-        {
+        for (Rocket rocket : selectedRockets) {
             ArrayList<Algorithm> algorithmsForThisRocket = new ArrayList<>();
-            for (CustomMenuItem algorithmItem : algorithmItems)
-            {
-                if (((CheckBox) algorithmItem.getContent()).isSelected())
-                {
-                    if (algorithmItem.getText().equals(algorithmsNames[0]))
-                    {
+            for (CustomMenuItem algorithmItem : algorithmItems) {
+                if (((CheckBox) algorithmItem.getContent()).isSelected()) {
+                    if (algorithmItem.getText().equals(algorithmsNames[0])) {
                         algorithmsForThisRocket.add(new Euler(rocket, calculationInterval));
-                    }
-                    else if (algorithmItem.getText().equals(algorithmsNames[1]))
-                    {
+                    } else if (algorithmItem.getText().equals(algorithmsNames[1])) {
                         algorithmsForThisRocket.add(new Midpoint(rocket, calculationInterval));
-                    }
-                    else if (algorithmItem.getText().equals(algorithmsNames[2]))
-                    {
+                    } else if (algorithmItem.getText().equals(algorithmsNames[2])) {
                         algorithmsForThisRocket.add(new PredictorCorrector(rocket, calculationInterval));
                     }
                 }
             }
 
-            for (Algorithm algorithm : algorithmsForThisRocket)
-            {
+            for (Algorithm algorithm : algorithmsForThisRocket) {
                 XYChart.Series<Number, Number> velocity, height, mass, gravitation, resultingForce, joules;
                 velocity = new XYChart.Series<>();
                 height = new XYChart.Series<>();
@@ -192,24 +182,19 @@ public class Controller implements Initializable {
             }
         }
 
-        for (Algorithm algorithm : algorithms)
-        {
+        for (Algorithm algorithm : algorithms) {
             Thread calculation = new Thread(algorithm);
             calculation.setName(algorithm.getClass().getSimpleName() + " " + algorithm.getRocket().getName() + " Calculation Thread");
             calculation.start();
         }
 
-        AnimationTimer animationTimer = new AnimationTimer()
-        {
+        AnimationTimer animationTimer = new AnimationTimer() {
             @Override
-            public void handle(long now)
-            {
-                if (reset)
-                {
+            public void handle(long now) {
+                if (reset) {
                     stop();
                 }
-                for (Algorithm algorithm : algorithms)
-                {
+                for (Algorithm algorithm : algorithms) {
                     Rocket algorithmRocket = algorithm.getRocket();
 
                     addDataQueue(algorithmRocket.getVelocityQueue(), algorithmsGraphs.get(algorithm)[0], algorithm.stalling());
@@ -225,41 +210,34 @@ public class Controller implements Initializable {
         animationTimer.start();
     }
 
-    public void handleMouseClicked(MouseEvent event)
-    {
+    public void handleMouseClicked(MouseEvent event) {
         double mouseX = event.getX();
         double mouseY = event.getY();
 
         LineChart placeholder;
-        if(event.getY() > 695 && event.getX() < 995)
-        {
-            if(mouseX > 45 && mouseX < 460) {
+        if (event.getY() > 695 && event.getX() < 995) {
+            if (mouseX > 45 && mouseX < 460) {
                 System.out.println("reee");
                 placeholder = bottomLeftChart;
                 bottomLeftChart = mainChart;
                 mainChart = placeholder;
-            }
-            else if(mouseX > 515 && mouseX < 935) {
+            } else if (mouseX > 515 && mouseX < 935) {
                 System.out.println("reee");
                 placeholder = bottomCenterChart;
                 bottomCenterChart = mainChart;
                 mainChart = placeholder;
-            }
-            else if(mouseX > 990 && mouseX < 1410) {
+            } else if (mouseX > 990 && mouseX < 1410) {
                 System.out.println("reee");
                 placeholder = bottomRightChart;
                 bottomRightChart = mainChart;
                 mainChart = placeholder;
             }
-        }
-        else if(mouseX > 990 && mouseX < 1410)
-        {
-            if(event.getY() > 355 && event.getX() < 645) {
+        } else if (mouseX > 990 && mouseX < 1410) {
+            if (event.getY() > 355 && event.getX() < 645) {
                 placeholder = centerRightChart;
                 centerRightChart = mainChart;
                 mainChart = placeholder;
-            }
-            else if(event.getY() > 15 && event.getX() < 300) {
+            } else if (event.getY() > 15 && event.getX() < 300) {
                 placeholder = topRightChart;
                 topRightChart = mainChart;
                 mainChart = placeholder;
@@ -267,15 +245,13 @@ public class Controller implements Initializable {
         }
     }
 
-    private void replaceWithMainChart(LineChart<Number, Number> chart)
-    {
+    private void replaceWithMainChart(LineChart<Number, Number> chart) {
         LineChart placeholder = chart;
         chart = mainChart;
         mainChart = placeholder;
     }
 
-    private void displayErrorDialog(String title, String header, String content)
-    {
+    private void displayErrorDialog(String title, String header, String content) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
         alert.setHeaderText(header);
@@ -291,8 +267,7 @@ public class Controller implements Initializable {
         launchButton.setVisible(true);
         resetButton.setDisable(true);
         resetButton.setVisible(false);
-        for(Algorithm algorithm : algorithms)
-        {
+        for (Algorithm algorithm : algorithms) {
             algorithm.setRunning(false);
         }
     }
@@ -360,19 +335,16 @@ public class Controller implements Initializable {
         Optional<ArrayList<String>> result = dialog.showAndWait();
 
         result.ifPresent(content -> {
-            if(result.get().get(1).matches("[0-9]+[.]?[0-9]*")
+            if (result.get().get(1).matches("[0-9]+[.]?[0-9]*")
                     && result.get().get(2).matches("[0-9]+[.]?[0-9]*")
                     && result.get().get(3).matches("[0-9]+[.]?[0-9]*")
-                    && result.get().get(4).matches("[0-9]+[.]?[0-9]*"))
-            {
+                    && result.get().get(4).matches("[0-9]+[.]?[0-9]*")) {
                 selectableRockets.add(new Rocket(result.get().get(0),
                         Double.parseDouble(result.get().get(1)),
                         Double.parseDouble(result.get().get(2)),
                         Double.parseDouble(result.get().get(3)),
                         Double.parseDouble(result.get().get(4))));
-            }
-            else
-            {
+            } else {
                 displayErrorDialog("Invalid Content", "Value/s of wrong type!", "The rocket could not be created due to one or more values not being decimal numbers.");
 
                 handleRocketCreation(null);
@@ -400,14 +372,10 @@ public class Controller implements Initializable {
                 ArrayList<Data> list = new ArrayList<>();
                 dataQueue.drainTo(list);
                 XYChart.Data[] array = new XYChart.Data[list.size()];
-                System.out.println("asdsadd");
                 for (int i = 0; i < list.size(); i++) {
                     array[i] = new XYChart.Data(list.get(i).getTimestamp() / 1000.0, list.get(i).getValue());
-                    System.out.println("copying....");
                 }
-                System.out.println("painting....");
                 chart.getData().addAll(array);
-                System.out.println("finished....");
             } else {
                 Data data = dataQueue.poll();
                 chart.getData().add(new XYChart.Data(data.getTimestamp() / 1000.0, data.getValue()));
