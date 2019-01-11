@@ -210,41 +210,6 @@ public class Controller implements Initializable {
         animationTimer.start();
     }
 
-    public void handleMouseClicked(MouseEvent event) {
-        double mouseX = event.getX();
-        double mouseY = event.getY();
-
-        LineChart placeholder;
-        if (event.getY() > 695 && event.getX() < 995) {
-            if (mouseX > 45 && mouseX < 460) {
-                System.out.println("reee");
-                placeholder = bottomLeftChart;
-                bottomLeftChart = mainChart;
-                mainChart = placeholder;
-            } else if (mouseX > 515 && mouseX < 935) {
-                System.out.println("reee");
-                placeholder = bottomCenterChart;
-                bottomCenterChart = mainChart;
-                mainChart = placeholder;
-            } else if (mouseX > 990 && mouseX < 1410) {
-                System.out.println("reee");
-                placeholder = bottomRightChart;
-                bottomRightChart = mainChart;
-                mainChart = placeholder;
-            }
-        } else if (mouseX > 990 && mouseX < 1410) {
-            if (event.getY() > 355 && event.getX() < 645) {
-                placeholder = centerRightChart;
-                centerRightChart = mainChart;
-                mainChart = placeholder;
-            } else if (event.getY() > 15 && event.getX() < 300) {
-                placeholder = topRightChart;
-                topRightChart = mainChart;
-                mainChart = placeholder;
-            }
-        }
-    }
-
     private void replaceWithMainChart(LineChart<Number, Number> chart) {
         LineChart placeholder = chart;
         chart = mainChart;

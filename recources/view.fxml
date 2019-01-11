@@ -94,7 +94,7 @@
         </AnchorPane>
         <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #000015;" HBox.hgrow="ALWAYS">
             <children>
-                <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onMouseClicked="#handleMouseClicked" prefHeight="1080.0" prefWidth="1422.0">
+                <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="1080.0" prefWidth="1422.0">
                     <bottom>
                         <HBox prefHeight="400.0" prefWidth="1422.0" BorderPane.alignment="CENTER">
                             <children>
