@@ -17,9 +17,11 @@ public class PredictorCorrector extends Algorithm {
     public void run() {
         init();
         startTime = System.currentTimeMillis();
+
         while (running) {
             increment();
         }
+
         stopTime = System.currentTimeMillis();
         logPerformance();
     }
@@ -27,11 +29,18 @@ public class PredictorCorrector extends Algorithm {
     @Override
     public void increment() {
         if (!stalling()) {
+            //calculate gravitational force
             calculateGravitation();
+
+            //calculate resulting force
             calculateResultingForce();
+
             calculatePrediction();
-            calculateHeight();
-            calculateFuel();
+            //calculates new height
+            rocket.setHeight(getNewHeight(interval, rocket.getHeight(), rocket.getVelocity()));
+
+            //calculate fuel loss
+            rocket.setFuel(calculateNewWeight(interval, rocket.getFuel(), rocket.getMassLossRate()));
 
             rocket.saveStep(passedTime);
             passedTime += interval;
@@ -48,15 +57,6 @@ public class PredictorCorrector extends Algorithm {
     private void calculatePrediction() {
         double sum = rocket.getVelocity() + getNewVelocity(interval, getNewVelocity(interval, rocket.getVelocity()));
         rocket.setVelocity(sum / 2.0);
-    }
-
-
-    private void calculateFuel() {
-        rocket.setFuel(calculateNewWeight(interval, rocket.getFuel(), rocket.getMassLossRate()));
-    }
-
-    private void calculateHeight() {
-        rocket.setHeight(getNewHeight(interval, rocket.getHeight(), rocket.getVelocity()));
     }
 
     private void calculateResultingForce() {

@@ -1,11 +1,10 @@
 package ch.kbw.rocket.sim.model;
 
-//FIXME: not correct
 public class Midpoint extends Algorithm {
+
     public Midpoint(Rocket rocket, int interval) {
         super(rocket, interval);
         passedTime = 0;
-
     }
 
     @Override
@@ -16,6 +15,7 @@ public class Midpoint extends Algorithm {
         while (running) {
             increment();
         }
+
         stopTime = System.currentTimeMillis();
         logPerformance();
     }
@@ -46,6 +46,7 @@ public class Midpoint extends Algorithm {
 
     @Override
     double getNewVelocity(long deltaTime, double v1) {
+        //this method isn't required here, because with the midpoint method uses other arguments
         return 0;
     }
 
@@ -54,15 +55,8 @@ public class Midpoint extends Algorithm {
         rocket.setVelocity(v);
     }
 
-
     private double getNewSpeed(double m, double v1) {
         double m2 = calculateGravitation(m, rocket.getHeight() + Constant.EARTH_RADIUS_M);
         return (rocket.getForce() - m2) / rocket.getFullWeight() * interval / 1000.0 + v1;
     }
-
-
-    private void calculateHeight() {
-        rocket.setHeight(getNewHeight(interval, rocket.getHeight(), rocket.getVelocity()));
-    }
-
 }

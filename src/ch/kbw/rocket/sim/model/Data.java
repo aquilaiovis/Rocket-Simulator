@@ -4,7 +4,7 @@ public class Data {
     private double value;
     private long timestamp;
 
-    public Data(double value, long timestamp) {
+    Data(double value, long timestamp) {
         this.value = value;
         this.timestamp = timestamp;
     }
@@ -13,15 +13,7 @@ public class Data {
         return value;
     }
 
-    public void setValue(double value) {
-        this.value = value;
-    }
-
     public long getTimestamp() {
         return timestamp;
-    }
-
-    public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
     }
 }
