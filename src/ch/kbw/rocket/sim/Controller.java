@@ -12,9 +12,9 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,7 +37,7 @@ public class Controller implements Initializable {
     private NumberAxis xAxis, yAxis;
 
     @FXML
-    private LineChart<Number, Number> mainChart, bottomChart, bottomCenterChart, bottomRightChart,
+    private LineChart<Number, Number> mainChart, bottomLeftChart, bottomCenterChart, bottomRightChart,
             centerRightChart, topRightChart;
 
     @FXML
@@ -95,8 +95,16 @@ public class Controller implements Initializable {
     }
 
     public void handleLaunch(ActionEvent event) {
-        if(calculationIntervalField.getText() == null) return;
-        if(!calculationIntervalField.getText().matches("[0-9]+")) return;
+        if(calculationIntervalField.getText() == null) {
+            displayErrorDialog("No entry", "Must enter an amount!",
+                    "Please enter a whole number for the field Berechnungsinterval.");
+            return;
+        }
+        if(!calculationIntervalField.getText().matches("[0-9]+")) {
+            displayErrorDialog("Invalid entry", "Whole numbers only!",
+                    "Please enter a whole number for the field Berechnungsinterval.");
+            return;
+        }
 
         calculationInterval = Integer.parseInt(calculationIntervalField.getText());
 
@@ -110,14 +118,14 @@ public class Controller implements Initializable {
         algorithmsGraphs = new HashMap<>();
 
         mainChart.getData().clear();
-        bottomChart.getData().clear();
+        bottomLeftChart.getData().clear();
         bottomCenterChart.getData().clear();
         bottomRightChart.getData().clear();
         centerRightChart.getData().clear();
         topRightChart.getData().clear();
 
         initializeChart(mainChart, "Velocity", "m/s");
-        initializeChart(bottomChart, "height", "m");
+        initializeChart(bottomLeftChart, "height", "m");
         initializeChart(bottomCenterChart, "mass", "kg");
         initializeChart(bottomRightChart, "gravitation", "N");
         initializeChart(centerRightChart, "ResultingForce", "m/s");
@@ -176,7 +184,7 @@ public class Controller implements Initializable {
 
                 String graphName = algorithm.getClass().getSimpleName() + " " + algorithm.getRocket().getName();
                 addGraphToChart(mainChart, velocity, graphName);
-                addGraphToChart(bottomChart, height, graphName);
+                addGraphToChart(bottomLeftChart, height, graphName);
                 addGraphToChart(bottomCenterChart, mass, graphName);
                 addGraphToChart(bottomRightChart, gravitation, graphName);
                 addGraphToChart(centerRightChart, resultingForce, graphName);
@@ -215,6 +223,65 @@ public class Controller implements Initializable {
             }
         };
         animationTimer.start();
+    }
+
+    public void handleMouseClicked(MouseEvent event)
+    {
+        double mouseX = event.getX();
+        double mouseY = event.getY();
+
+        LineChart placeholder;
+        if(event.getY() > 695 && event.getX() < 995)
+        {
+            if(mouseX > 45 && mouseX < 460) {
+                System.out.println("reee");
+                placeholder = bottomLeftChart;
+                bottomLeftChart = mainChart;
+                mainChart = placeholder;
+            }
+            else if(mouseX > 515 && mouseX < 935) {
+                System.out.println("reee");
+                placeholder = bottomCenterChart;
+                bottomCenterChart = mainChart;
+                mainChart = placeholder;
+            }
+            else if(mouseX > 990 && mouseX < 1410) {
+                System.out.println("reee");
+                placeholder = bottomRightChart;
+                bottomRightChart = mainChart;
+                mainChart = placeholder;
+            }
+        }
+        else if(mouseX > 990 && mouseX < 1410)
+        {
+            if(event.getY() > 355 && event.getX() < 645) {
+                placeholder = centerRightChart;
+                centerRightChart = mainChart;
+                mainChart = placeholder;
+            }
+            else if(event.getY() > 15 && event.getX() < 300) {
+                placeholder = topRightChart;
+                topRightChart = mainChart;
+                mainChart = placeholder;
+            }
+        }
+    }
+
+    private void replaceWithMainChart(LineChart<Number, Number> chart)
+    {
+        LineChart placeholder = chart;
+        chart = mainChart;
+        mainChart = placeholder;
+    }
+
+    private void displayErrorDialog(String title, String header, String content)
+    {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+
+        alert.showAndWait();
     }
 
     public void handleReset(ActionEvent event) {
@@ -306,12 +373,7 @@ public class Controller implements Initializable {
             }
             else
             {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Invalid Content");
-                alert.setHeaderText("Value/s of wrong type!");
-                alert.setContentText("The rocket could not be created due to one or more values not being decimal numbers.");
-
-                alert.showAndWait();
+                displayErrorDialog("Invalid Content", "Value/s of wrong type!", "The rocket could not be created due to one or more values not being decimal numbers.");
 
                 handleRocketCreation(null);
             }
@@ -347,10 +409,8 @@ public class Controller implements Initializable {
                 chart.getData().addAll(array);
                 System.out.println("finished....");
             } else {
-
                 Data data = dataQueue.poll();
                 chart.getData().add(new XYChart.Data(data.getTimestamp() / 1000.0, data.getValue()));
-
             }
         }
     }
